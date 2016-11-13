@@ -49,6 +49,7 @@ func hashStruct(data interface{}) (hash string) {
 
 // NewEntry adds a new secret to the store.
 func (st secretStore) NewEntry(e StoreEntry) string {
+	e.DateAdded = time.Now()
 	id := hashStruct(e)
 	st[id] = e
 	return id
