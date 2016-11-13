@@ -14,18 +14,22 @@ import (
 )
 
 const (
-	listen  = ":9154"
-	uApiGet = "/api/v1/get/"
-	uApiNew = "/api/v1/new"
-	uGet    = "/g"
-	maxData = 1048576 // 1MB
+	schemeHost = "http://localhost"
+	listen     = ":9154"
+	uApiGet    = "/api/v1/get/"
+	uApiNew    = "/api/v1/new"
+	uGet       = "/g"
+	maxData    = 1048576 // 1MB
 )
 
+// In-memory representation of a secret.
 type StoreEntry struct {
 	Secret    string    `json:"secret"`
 	MaxClicks int       `json:"max_clicks"`
 	DateAdded time.Time `json:"date_added"`
 }
+
+// Secret augmented with computed fields.
 type StoreEntryInfo struct {
 	StoreEntry
 	Id        string `json:"id"`
@@ -33,29 +37,34 @@ type StoreEntryInfo struct {
 	Url       string `json:"url"`
 	Clicks    int    `json:"clicks"`
 }
+
 type secretStore map[string]StoreEntry
 
+// hashStruct returns a hash from an arbitrary structure, usable in a URL.
 func hashStruct(data interface{}) (hash string) {
 	hashBytes := sha256.Sum256([]byte(fmt.Sprintf("%#v", data)))
 	hash = base64.URLEncoding.EncodeToString(hashBytes[:])
 	return
 }
 
+// NewEntry adds a new secret to the store.
 func (st secretStore) NewEntry(e StoreEntry) string {
 	id := hashStruct(e)
 	st[id] = e
 	return id
 }
 
+// GetEntry retrives a secret from the store.
 func (st secretStore) GetEntry(id string) (se StoreEntry, ok bool) {
 	se, ok = st[id]
 	return
 }
 
+// GetEntryInfo wraps GetEntry and adds some computed fields.
 func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
 	pathQuery := uGet + "?" + id
-	url := "http://localhost" + listen + pathQuery
+	url := schemeHost + listen + pathQuery
 	return StoreEntryInfo{entry, id, pathQuery, url, 3}, ok
 }
 
