@@ -26,6 +26,7 @@ const (
 type StoreEntry struct {
 	Secret    string    `json:"secret"`
 	MaxClicks int       `json:"max_clicks"`
+	Clicks    int       `json:"clicks"`
 	DateAdded time.Time `json:"date_added"`
 }
 
@@ -35,7 +36,6 @@ type StoreEntryInfo struct {
 	Id        string `json:"id"`
 	PathQuery string `json:"path_query"`
 	Url       string `json:"url"`
-	Clicks    int    `json:"clicks"`
 }
 
 type secretStore map[string]StoreEntry
@@ -55,7 +55,7 @@ func (st secretStore) NewEntry(e StoreEntry) string {
 	return id
 }
 
-// GetEntry retrives a secret from the store.
+// GetEntry retrieves a secret from the store.
 func (st secretStore) GetEntry(id string) (se StoreEntry, ok bool) {
 	se, ok = st[id]
 	return
@@ -66,12 +66,26 @@ func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
 	pathQuery := uGet + "?" + id
 	url := schemeHost + listen + pathQuery
-	return StoreEntryInfo{entry, id, pathQuery, url, 3}, ok
+	return StoreEntryInfo{entry, id, pathQuery, url}, ok
+}
+
+// Click increases the click counter for an entry.
+func (st secretStore) Click(id string) {
+	entry, ok := st.GetEntry(id)
+	if ok {
+		if entry.Clicks < entry.MaxClicks-1 {
+			entry.Clicks += 1
+			st[id] = entry
+		} else {
+			delete(st, id)
+		}
+	}
+	return
 }
 
 func main() {
 	store := make(secretStore)
-	store["1234"] = StoreEntry{"geheim", 5, time.Now()}
+	store["1234"] = StoreEntry{"geheim", 5, 0, time.Now()}
 
 	/*
 		/							# intro page
@@ -97,11 +111,13 @@ func main() {
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r)
+		id := r.URL.Path[len(uApiGet):]
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		if entry, ok := store.GetEntryInfo(r.URL.Path[len(uApiGet):]); !ok {
+		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprintln(w, "{}")
 		} else {
+			store.Click(id)
 			w.WriteHeader(http.StatusOK)
 			if err := json.NewEncoder(w).Encode(entry); err != nil {
 				panic(err)
