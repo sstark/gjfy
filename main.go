@@ -8,7 +8,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"time"
 )
 
 const (
@@ -22,7 +21,6 @@ const (
 
 func main() {
 	store := make(secretStore)
-	store["1234"] = StoreEntry{"geheim", 5, 0, time.Now()}
 
 	/*
 		/							# intro page
@@ -33,17 +31,6 @@ func main() {
 		/g?34g34g243				# show entry, decrease counter
 		/n							# generate new entry (takes POST data)
 		/i?34g34g243				# show info for entry (e. g. after creating)
-
-		"entryinfo": {
-			"id": "34g34g243",
-			"path_query": "/g?34g34g243",
-			"url": "https://klause.bla.de/g?34g34g243",
-			"date_added": <jsondate>,
-			"valid_until": <jsondate>,
-			"clicks": 0,
-			"max_clicks": 1,
-		}
-
 	*/
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
@@ -79,7 +66,7 @@ func main() {
 				panic(err)
 			}
 		}
-		id := store.AddEntry(entry)
+		id := store.AddEntry(entry, "")
 		log.Println(id)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)
