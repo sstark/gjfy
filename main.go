@@ -79,7 +79,7 @@ func main() {
 				panic(err)
 			}
 		}
-		id := store.NewEntry(entry)
+		id := store.AddEntry(entry)
 		log.Println(id)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)

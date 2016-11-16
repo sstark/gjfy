@@ -32,12 +32,17 @@ func hashStruct(data interface{}) (hash string) {
 	return
 }
 
-// NewEntry adds a new secret to the store.
-func (st secretStore) NewEntry(e StoreEntry) string {
+// AddEntry adds a secret object to the store.
+func (st secretStore) AddEntry(e StoreEntry) string {
 	e.DateAdded = time.Now()
 	id := hashStruct(e)
 	st[id] = e
 	return id
+}
+
+// NewEntry adds a new secret to the store.
+func (st secretStore) NewEntry(secret string, maxclicks int) string {
+	return st.AddEntry(StoreEntry{secret, maxclicks, 0, time.Time{}})
 }
 
 // GetEntry retrieves a secret from the store.
