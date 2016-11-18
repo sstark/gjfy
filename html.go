@@ -1,20 +1,27 @@
 package main
 
 const (
-	htmlView = `
+	htmlMaster = `
+	{{define "master"}}
 	<html>
-	<head><title>{{.Id}}</title></head>
+	<head><title>GJFY - {{template "title" .}}</title></head>
 	<body>
+	{{template "content" .}}
+	</body>
+	</html>
+	{{end}}
+	`
+	htmlView = `
+	{{define "title"}}VIEW{{end}}
+	{{define "content"}}
 	<h1>{{.Id}}</h1>
 	<div>The secret is:</div>
 	<div>{{.Secret}}</div>
-	</body>
-	</html>
+	{{end}}
 	`
 	htmlViewInfo = `
-	<html>
-	<head><title>{{.Id}}</title></head>
-	<body>
+	{{define "title"}}VIEWINFO{{end}}
+	{{define "content"}}
 	<h1>{{.Id}}</h1>
 	<table>
 	<tr>
@@ -32,16 +39,13 @@ const (
 		<td>{{.DateAdded}}</td>
 	</tr>
 	</table>
-	</body>
-	</html>
+	{{end}}
 	`
 	htmlViewErr = `
-	<html>
-	<head><title>Error</title></head>
-	<body>
+	{{define "title"}}ERROR{{end}}
+	{{define "content"}}
 	<h1>Not available</h1>
 	<p>This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
-	</body>
-	</html>
+	{{end}}
 	`
 )

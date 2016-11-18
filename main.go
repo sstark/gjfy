@@ -22,6 +22,7 @@ const (
 
 func main() {
 	store := make(secretStore)
+	store.NewEntry("secret", 100, "test")
 
 	/*
 		/							# intro page
@@ -33,9 +34,15 @@ func main() {
 		/n							# generate new entry (takes POST data)
 		/i?id=34g34g243				# show info for entry (e. g. after creating)
 	*/
-	tView, _ := template.New("view").Parse(htmlView)
-	tViewErr, _ := template.New("viewErr").Parse(htmlViewErr)
-	tViewInfo, _ := template.New("viewInfo").Parse(htmlViewInfo)
+	tView := template.New("view")
+	tView.Parse(htmlMaster)
+	tView.Parse(htmlView)
+	tViewErr := template.New("viewErr")
+	tViewErr.Parse(htmlMaster)
+	tViewErr.Parse(htmlViewErr)
+	tViewInfo := template.New("viewInfo")
+	tViewInfo.Parse(htmlMaster)
+	tViewInfo.Parse(htmlViewInfo)
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r)
@@ -84,11 +91,11 @@ func main() {
 		id := r.URL.Query().Get("id")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
-			tViewErr.Execute(w, nil)
+			tViewErr.ExecuteTemplate(w, "master", nil)
 		} else {
 			store.Click(id)
 			w.WriteHeader(http.StatusOK)
-			tView.Execute(w, entry)
+			tView.ExecuteTemplate(w, "master", entry)
 		}
 	})
 
@@ -97,10 +104,10 @@ func main() {
 		id := r.URL.Query().Get("id")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
-			tViewErr.Execute(w, nil)
+			tViewErr.ExecuteTemplate(w, "master", nil)
 		} else {
 			w.WriteHeader(http.StatusOK)
-			tViewInfo.Execute(w, entry)
+			tViewInfo.ExecuteTemplate(w, "master", entry)
 		}
 	})
 
