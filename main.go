@@ -16,6 +16,7 @@ const (
 	uApiGet    = "/api/v1/get/"
 	uApiNew    = "/api/v1/new"
 	uGet       = "/g"
+	uInfo      = "/i"
 	maxData    = 1048576 // 1MB
 )
 
@@ -34,6 +35,7 @@ func main() {
 	*/
 	tView, _ := template.New("view").Parse(htmlView)
 	tViewErr, _ := template.New("viewErr").Parse(htmlViewErr)
+	tViewInfo, _ := template.New("viewInfo").Parse(htmlViewInfo)
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r)
@@ -87,6 +89,18 @@ func main() {
 			store.Click(id)
 			w.WriteHeader(http.StatusOK)
 			tView.Execute(w, entry)
+		}
+	})
+
+	http.HandleFunc(uInfo, func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r)
+		id := r.URL.Query().Get("id")
+		if entry, ok := store.GetEntryInfo(id); !ok {
+			w.WriteHeader(http.StatusNotFound)
+			tViewErr.Execute(w, nil)
+		} else {
+			w.WriteHeader(http.StatusOK)
+			tViewInfo.Execute(w, entry)
 		}
 	})
 

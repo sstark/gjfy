@@ -11,6 +11,30 @@ const (
 	</body>
 	</html>
 	`
+	htmlViewInfo = `
+	<html>
+	<head><title>{{.Id}}</title></head>
+	<body>
+	<h1>{{.Id}}</h1>
+	<table>
+	<tr>
+		<th>Url</th>
+		<th>PathQuery</th>
+		<th>MaxClicks</th>
+		<th>Clicks</th>
+		<th>DateAdded</th>
+	</tr>
+	<tr>
+		<td><a href="{{.Url}}">{{.Url}}</a></td>
+		<td>{{.PathQuery}}</td>
+		<td>{{.MaxClicks}}</td>
+		<td>{{.Clicks}}</td>
+		<td>{{.DateAdded}}</td>
+	</tr>
+	</table>
+	</body>
+	</html>
+	`
 	htmlViewErr = `
 	<html>
 	<head><title>Error</title></head>
