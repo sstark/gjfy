@@ -17,6 +17,7 @@ const (
 	uApiNew    = "/api/v1/new"
 	uGet       = "/g"
 	uInfo      = "/i"
+	uFav       = "/favicon.ico"
 	maxData    = 1048576 // 1MB
 )
 
@@ -109,6 +110,13 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			tViewInfo.ExecuteTemplate(w, "master", entry)
 		}
+	})
+
+	http.HandleFunc(uFav, func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r)
+		w.Header().Set("Content-Type", "image/x-icon")
+		w.WriteHeader(http.StatusOK)
+		w.Write(favicon)
 	})
 
 	log.Fatal(http.ListenAndServe(listen, nil))
