@@ -57,7 +57,7 @@ func (st secretStore) GetEntry(id string) (se StoreEntry, ok bool) {
 // GetEntryInfo wraps GetEntry and adds some computed fields.
 func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
-	pathQuery := uGet + "?" + id
+	pathQuery := uGet + "?id=" + id
 	url := schemeHost + listen + pathQuery
 	return StoreEntryInfo{entry, id, pathQuery, url}, ok
 }

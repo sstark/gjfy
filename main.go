@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	//"html"
+	"html/template"
 	"io"
 	"io/ioutil"
 	"log"
@@ -28,10 +28,12 @@ func main() {
 			/api/v1/get/34g34g243	# get entry, decrease counter
 			/api/v1/new				# generate new entry (takes POST data)
 			/api/v1/info/34g34g243	# show info for entry
-		/g?34g34g243				# show entry, decrease counter
+		/g?id=34g34g243				# show entry, decrease counter
 		/n							# generate new entry (takes POST data)
-		/i?34g34g243				# show info for entry (e. g. after creating)
+		/i?id=34g34g243				# show info for entry (e. g. after creating)
 	*/
+	tView, _ := template.New("view").Parse(htmlView)
+	tViewErr, _ := template.New("viewErr").Parse(htmlViewErr)
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r)
@@ -72,6 +74,19 @@ func main() {
 		w.WriteHeader(http.StatusCreated)
 		if err := json.NewEncoder(w).Encode(id); err != nil {
 			panic(err)
+		}
+	})
+
+	http.HandleFunc(uGet, func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r)
+		id := r.URL.Query().Get("id")
+		if entry, ok := store.GetEntryInfo(id); !ok {
+			w.WriteHeader(http.StatusNotFound)
+			tViewErr.Execute(w, nil)
+		} else {
+			store.Click(id)
+			w.WriteHeader(http.StatusOK)
+			tView.Execute(w, entry)
 		}
 	})
 
