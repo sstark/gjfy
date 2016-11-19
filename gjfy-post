@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+POSTURL="http://localhost:9154/api/v1/new"
+
+whence jq >/dev/null 2>&1 || { print -u2 "jq utility not found"; exit 1 }
+if [[ -z $1 ]]
+then
+    print -u2 "usage: $0 <secret>"
+    exit 2
+fi
+
+postdata="{\"secret\":\"$1\"}"
+curl -s -X POST -d $postdata $POSTURL | jq -r '.url'
