@@ -9,5 +9,10 @@ then
     exit 2
 fi
 
-postdata="{\"secret\":\"$1\"}"
+if [[ -z $2 ]]
+then
+    postdata="{\"secret\":\"$1\"}"
+else
+    postdata="{\"secret\":\"$1\",\"max_clicks\":$2}"
+fi
 curl -s -X POST -d $postdata $POSTURL | jq -r '.url'
