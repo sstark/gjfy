@@ -26,16 +26,6 @@ func main() {
 	store := make(secretStore)
 	store.NewEntry("secret", 100, "test")
 
-	/*
-		/							# intro page
-		/api/v1
-			/api/v1/get/34g34g243	# get entry, decrease counter
-			/api/v1/new				# generate new entry (takes POST data)
-			/api/v1/info/34g34g243	# show info for entry
-		/g?id=34g34g243				# show entry, decrease counter
-		/n							# generate new entry (takes POST data)
-		/i?id=34g34g243				# show info for entry (e. g. after creating)
-	*/
 	tView := template.New("view")
 	tView.Parse(htmlMaster)
 	tView.Parse(htmlView)
@@ -80,10 +70,11 @@ func main() {
 			}
 		}
 		id := store.AddEntry(entry, "")
+		newEntry, _ := store.GetEntryInfoHidden(id)
 		log.Println(id)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)
-		if err := json.NewEncoder(w).Encode(id); err != nil {
+		if err := json.NewEncoder(w).Encode(newEntry); err != nil {
 			panic(err)
 		}
 	})

@@ -62,6 +62,14 @@ func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	return StoreEntryInfo{entry, id, pathQuery, url}, ok
 }
 
+// GetEntryInfo wraps GetEntry and adds some computed fields. In addition it
+// hides the "secret" value.
+func (st secretStore) GetEntryInfoHidden(id string) (si StoreEntryInfo, ok bool) {
+	entry, ok := st.GetEntryInfo(id)
+	entry.Secret = "#HIDDEN#"
+	return entry, ok
+}
+
 // Click increases the click counter for an entry.
 func (st secretStore) Click(id string) {
 	entry, ok := st.GetEntry(id)
