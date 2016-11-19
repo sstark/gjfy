@@ -18,6 +18,7 @@ const (
 	uGet       = "/g"
 	uInfo      = "/i"
 	uFav       = "/favicon.ico"
+	uCss       = "/custom.css"
 	maxData    = 1048576 // 1MB
 )
 
@@ -117,6 +118,14 @@ func main() {
 		w.Header().Set("Content-Type", "image/x-icon")
 		w.WriteHeader(http.StatusOK)
 		w.Write(favicon)
+	})
+
+	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
+		log.Println(r)
+		css := readCssFile()
+		w.Header().Set("Content-Type", "text/css")
+		w.WriteHeader(http.StatusOK)
+		w.Write(css)
 	})
 
 	log.Fatal(http.ListenAndServe(listen, nil))

@@ -1,0 +1,70 @@
+
+body {
+    font-size: 140%;
+    width: 100%;
+    font-family: sans-serif;
+    background: #f7ffe6
+}
+
+div {
+    padding: 0.5em;
+}
+
+h1#pageheading {
+    color: #cc6600;
+    padding: 0.5em;
+}
+
+div#secret {
+    font-family: monospace;
+    color: #cc6600;
+    border: 2px solid #cc6600;
+    margin-top: 1em;
+}
+div#contentcontainer {
+    width: 100%;
+}
+div#content {
+    margin-left: 25%;
+    margin-right: 25%
+}
+
+h2#mainheading {
+    position: relative;
+    width: 100%;
+    background: #99cc00;
+    color: black;
+    padding: 0.5em;
+}
+
+#mainheading:before, #mainheading:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 9600px;
+    right: 100%;
+    background: #99c500;
+}
+#mainheading:after { 
+    width: 1320px;
+    left: 100%;
+    background: #99c500;
+}
+
+table#info {
+   border-collapse: collapse; 
+}
+
+table#info th {
+    padding: 0.5em;
+    background: #e0e0e0;
+}
+
+table#info td {
+    padding: 0.5em;
+    background: white;
+}
+
+h2#errorheading {}
+p#errormessage {}

@@ -1,5 +1,10 @@
 package main
 
+import (
+	"io/ioutil"
+	"log"
+)
+
 const (
 	htmlMaster = `
 	{{define "master"}}
@@ -7,9 +12,14 @@ const (
 	<head>
 		<title>GJFY - {{template "title" .}}</title>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+		<link rel="stylesheet" type="text/css" href="custom.css">
 	</head>
 	<body>
+	<div id="contentcontainer">
+	<div id="content">
 	{{template "content" .}}
+	</div>
+	</div>
 	</body>
 	</html>
 	{{end}}
@@ -17,16 +27,21 @@ const (
 	htmlView = `
 	{{define "title"}}VIEW{{end}}
 	{{define "content"}}
-	<h1>{{.Id}}</h1>
-	<div>The secret is:</div>
-	<div>{{.Secret}}</div>
+	<h2 id="mainheading">{{.Id}}</h2>
+	<div>
+		The link you just invoked contains a secret (e. g. a password) somebody wants to share with you.
+		It will be valid only for a short time and you might not be able to invoke it again.
+		Please make sure you memorise the secret or write it down in an appropriate way.
+	</div>
+	<div>The secret contained in this link is as follows:</div>
+	<div id="secret">{{.Secret}}</div>
 	{{end}}
 	`
 	htmlViewInfo = `
 	{{define "title"}}VIEWINFO{{end}}
 	{{define "content"}}
-	<h1>{{.Id}}</h1>
-	<table>
+	<h2 id="mainheading">{{.Id}}</h2>
+	<table id="info">
 	<tr>
 		<th>Url</th>
 		<th>PathQuery</th>
@@ -47,8 +62,8 @@ const (
 	htmlViewErr = `
 	{{define "title"}}ERROR{{end}}
 	{{define "content"}}
-	<h1>Not available</h1>
-	<p>This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
+	<h2 id="errorheading">Not available</h2>
+	<p id="errormessage">This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
 	{{end}}
 	`
 )
@@ -77,4 +92,14 @@ var (
 		0xff, 0x9f, 0x0, 0x0, 0xfd, 0xdf, 0x0, 0x0, 0xfc, 0x9f, 0x0, 0x0, 0xfe,
 		0x3f, 0x0, 0x0, 0xff, 0xff, 0x0, 0x0, 0xff, 0xff, 0x0, 0x0, 0xff, 0xff,
 		0x0, 0x0}
+	cssFile = "/etc/gjfy/custom.css"
 )
+
+func readCssFile() []byte {
+	css, err := ioutil.ReadFile(cssFile)
+	if err != nil {
+		log.Println("could not read css file from", cssFile)
+		css = []byte{}
+	}
+	return css
+}
