@@ -21,6 +21,7 @@ type StoreEntryInfo struct {
 	Id        string `json:"id"`
 	PathQuery string `json:"path_query"`
 	Url       string `json:"url"`
+	ApiUrl    string `json:"api_url"`
 }
 
 type secretStore map[string]StoreEntry
@@ -59,7 +60,8 @@ func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
 	pathQuery := uGet + "?id=" + id
 	url := schemeHost + listen + pathQuery
-	return StoreEntryInfo{entry, id, pathQuery, url}, ok
+	apiurl := schemeHost + listen + uApiGet + id
+	return StoreEntryInfo{entry, id, pathQuery, url, apiurl}, ok
 }
 
 // GetEntryInfo wraps GetEntry and adds some computed fields. In addition it

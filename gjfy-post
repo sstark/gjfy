@@ -15,4 +15,4 @@ then
 else
     postdata="{\"secret\":\"$1\",\"max_clicks\":$2}"
 fi
-curl -s -X POST -d $postdata $POSTURL | jq -r '.url'
+curl -s -X POST -d $postdata $POSTURL | jq -r '.url,.api_url'
