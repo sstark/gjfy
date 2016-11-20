@@ -3,6 +3,8 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"os"
+	"path"
 )
 
 const (
@@ -66,6 +68,8 @@ const (
 	<p id="errormessage">This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
 	{{end}}
 	`
+	configDir   = "/etc/gjfy"
+	cssFileName = "custom.css"
 )
 
 var (
@@ -92,14 +96,27 @@ var (
 		0xff, 0x9f, 0x0, 0x0, 0xfd, 0xdf, 0x0, 0x0, 0xfc, 0x9f, 0x0, 0x0, 0xfe,
 		0x3f, 0x0, 0x0, 0xff, 0xff, 0x0, 0x0, 0xff, 0xff, 0x0, 0x0, 0xff, 0xff,
 		0x0, 0x0}
-	cssFile = "/etc/gjfy/custom.css"
 )
 
-func readCssFile() []byte {
-	css, err := ioutil.ReadFile(cssFile)
-	if err != nil {
-		log.Println("could not read css file from", cssFile)
-		css = []byte{}
+// tryReadFile takes a _filename_ as an argument and tries to read that file
+// from cwd and then configDir. If it doesn't find the file in any of them it
+// will return an empty byte slice.
+func tryReadFile(fn string) []byte {
+	var dirs []string
+	cwd, err := os.Getwd()
+	if err == nil {
+		dirs = append(dirs, cwd)
+	} else {
+		log.Println("could not get working directory")
 	}
-	return css
+	dirs = append(dirs, configDir)
+	for _, dir := range dirs {
+		contents, err := ioutil.ReadFile(path.Join(dir, fn))
+		if err == nil {
+			log.Printf("found %s in %s\n", fn, dir)
+			return contents
+		}
+	}
+	log.Println("could not find", fn)
+	return []byte{}
 }

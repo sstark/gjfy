@@ -113,7 +113,7 @@ func main() {
 
 	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r)
-		css := readCssFile()
+		css := tryReadFile(cssFileName)
 		w.Header().Set("Content-Type", "text/css")
 		w.WriteHeader(http.StatusOK)
 		w.Write(css)
