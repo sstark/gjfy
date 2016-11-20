@@ -29,7 +29,7 @@ type secretStore map[string]StoreEntry
 // hashStruct returns a hash from an arbitrary structure, usable in a URL.
 func hashStruct(data interface{}) (hash string) {
 	hashBytes := sha256.Sum256([]byte(fmt.Sprintf("%#v", data)))
-	hash = base64.URLEncoding.EncodeToString(hashBytes[:])
+	hash = base64.RawURLEncoding.EncodeToString(hashBytes[:])
 	return
 }
 
