@@ -15,11 +15,12 @@ h1#pageheading {
     padding: 0.5em;
 }
 
-div#secret {
+pre#secret {
     font-family: monospace;
     color: #cc6600;
     border: 2px solid #cc6600;
     margin-top: 1em;
+    padding: 0.5em;
 }
 div#contentcontainer {
     width: 100%;

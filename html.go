@@ -36,7 +36,7 @@ const (
 		Please make sure you memorise the secret or write it down in an appropriate way.
 	</div>
 	<div>The secret contained in this link is as follows:</div>
-	<div id="secret">{{.Secret}}</div>
+	<pre id="secret">{{.Secret}}</pre>
 	{{end}}
 	`
 	htmlViewInfo = `
