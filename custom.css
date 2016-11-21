@@ -3,7 +3,8 @@ body {
     font-size: 140%;
     width: 100%;
     font-family: sans-serif;
-    background: #f7ffe6
+    background: #daebe8;
+    color: #333333;
 }
 
 div {
@@ -17,8 +18,9 @@ h1#pageheading {
 
 pre#secret {
     font-family: monospace;
-    color: #cc6600;
-    border: 2px solid #cc6600;
+    color: #87bdd8;
+    background: #cfe0e8;
+    border: 2px solid #b7d7e8;
     margin-top: 1em;
     padding: 0.5em;
 }
@@ -33,8 +35,8 @@ div#content {
 h2#mainheading {
     position: relative;
     width: 100%;
-    background: #99cc00;
-    color: black;
+    background: #b7d7e8;
+    color: #333333;
     padding: 0.5em;
 }
 
@@ -45,12 +47,12 @@ h2#mainheading {
     bottom: 0;
     width: 9600px;
     right: 100%;
-    background: #99c500;
+    background: #87bdd8;
 }
 #mainheading:after { 
     width: 1320px;
     left: 100%;
-    background: #99c500;
+    background: #87bdd8;
 }
 
 table#info {
