@@ -25,6 +25,7 @@ pre#secret {
     color: #87bdd8;
     background: #cfe0e8;
     border: 2px solid #b7d7e8;
+    margin: 0.5em;
     margin-top: 1em;
     padding: 0.5em;
 }
@@ -36,10 +37,6 @@ div#contentcontainer {
     padding-right: 0px;
 }
 div#content {
-    /*
-    margin-left: 25%;
-    margin-right: 25%;
-    */
     margin-left: 0px;
     margin-right: 0px;
     padding-left: 0px;
@@ -83,8 +80,8 @@ p#errormessage {}
 div#footer {
     color: #87bdd8;
     font-size: 80%;
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: 26%;
+    margin-right: 26%;
     margin-top: 1em;
     font-style: italic;
     border-top: 1px solid #98cee8;
