@@ -79,3 +79,18 @@ h2#errorheading {
     padding-left: 26%;
 }
 p#errormessage {}
+
+div#footer {
+    color: #87bdd8;
+    font-size: 80%;
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 1em;
+    font-style: italic;
+    border-top: 1px solid #98cee8;
+}
+
+#footer a {
+    color: inherit;
+    text-decoration: none;
+}

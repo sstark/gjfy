@@ -12,29 +12,35 @@ const (
 	{{define "master"}}
 	<html>
 	<head>
-		<title>GJFY - {{template "title" .}}</title>
+		<title>GJFY{{block "title" .}}{{end}}</title>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="custom.css">
+		<link rel="stylesheet" type="text/css" href="custom.css" />
 	</head>
 	<body>
 	<div id="contentcontainer">
 	<div id="content">
-	{{template "content" .}}
+	{{block "content" .}}{{end}}
 	</div>
+	{{block "footer" .}}
+		<div id="footer">
+			<a href="https://github.com/sstark/gjfy">gjfy</a>
+		</div>
+	{{end}}
 	</div>
 	</body>
 	</html>
 	{{end}}
 	`
 	htmlView = `
-	{{define "title"}}VIEW{{end}}
+	{{define "title"}} - View Secret{{end}}
 	{{define "content"}}
-	<h2 id="mainheading">{{.Id}}</h2>
+	<h2 id="mainheading">The following text is just for you:</h2>
 	<div id="main">
 	<div>
-		The link you just invoked contains a secret (e. g. a password) somebody wants to share with you.
-		It will be valid only for a short time and you might not be able to invoke it again.
-		Please make sure you memorise the secret or write it down in an appropriate way.
+		The link you invoked contains a secret (a password for example)
+		somebody wants to share with you. It will be valid only for a short
+		time and you may not be able to invoke it again. Please make sure
+		you memorise the secret or write it down in an appropriate way.
 	</div>
 	<div>The secret contained in this link is as follows:</div>
 	<pre id="secret">{{.Secret}}</pre>
@@ -42,9 +48,9 @@ const (
 	{{end}}
 	`
 	htmlViewInfo = `
-	{{define "title"}}VIEWINFO{{end}}
+	{{define "title"}} - View Info{{end}}
 	{{define "content"}}
-	<h2 id="mainheading">{{.Id}}</h2>
+	<h2 id="mainheading">Metadata for {{.Id}}</h2>
 	<div id="main">
 	<table id="info">
 	<tr>
@@ -66,7 +72,7 @@ const (
 	{{end}}
 	`
 	htmlViewErr = `
-	{{define "title"}}ERROR{{end}}
+	{{define "title"}} - Error{{end}}
 	{{define "content"}}
 	<h2 id="errorheading">Not available</h2>
 	<div id="main">
