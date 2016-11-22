@@ -30,6 +30,7 @@ const (
 	{{define "title"}}VIEW{{end}}
 	{{define "content"}}
 	<h2 id="mainheading">{{.Id}}</h2>
+	<div id="main">
 	<div>
 		The link you just invoked contains a secret (e. g. a password) somebody wants to share with you.
 		It will be valid only for a short time and you might not be able to invoke it again.
@@ -37,12 +38,14 @@ const (
 	</div>
 	<div>The secret contained in this link is as follows:</div>
 	<pre id="secret">{{.Secret}}</pre>
+	</div>
 	{{end}}
 	`
 	htmlViewInfo = `
 	{{define "title"}}VIEWINFO{{end}}
 	{{define "content"}}
 	<h2 id="mainheading">{{.Id}}</h2>
+	<div id="main">
 	<table id="info">
 	<tr>
 		<th>Url</th>
@@ -59,13 +62,16 @@ const (
 		<td>{{.DateAdded}}</td>
 	</tr>
 	</table>
+	</div>
 	{{end}}
 	`
 	htmlViewErr = `
 	{{define "title"}}ERROR{{end}}
 	{{define "content"}}
 	<h2 id="errorheading">Not available</h2>
+	<div id="main">
 	<p id="errormessage">This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
+	</div>
 	{{end}}
 	`
 	configDir   = "/etc/gjfy"

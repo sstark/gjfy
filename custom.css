@@ -5,6 +5,10 @@ body {
     font-family: sans-serif;
     background: #daebe8;
     color: #333333;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 div {
@@ -26,34 +30,36 @@ pre#secret {
 }
 div#contentcontainer {
     width: 100%;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 div#content {
+    /*
     margin-left: 25%;
-    margin-right: 25%
+    margin-right: 25%;
+    */
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+div#main {
+    margin-left: 25%;
+    margin-right: 25%;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 h2#mainheading {
-    position: relative;
-    width: 100%;
     background: #b7d7e8;
-    color: #333333;
     padding: 0.5em;
+    padding-left: 26%;
+    color: #549aa5;
 }
 
-#mainheading:before, #mainheading:after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 9600px;
-    right: 100%;
-    background: #87bdd8;
-}
-#mainheading:after { 
-    width: 1320px;
-    left: 100%;
-    background: #87bdd8;
-}
 
 table#info {
    border-collapse: collapse; 
@@ -69,5 +75,7 @@ table#info td {
     background: white;
 }
 
-h2#errorheading {}
+h2#errorheading {
+    padding-left: 26%;
+}
 p#errormessage {}
