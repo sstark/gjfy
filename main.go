@@ -11,20 +11,23 @@ import (
 )
 
 const (
-	schemeHost = "http://localhost"
-	listen     = ":9154"
-	uApiGet    = "/api/v1/get/"
-	uApiNew    = "/api/v1/new"
-	uGet       = "/g"
-	uInfo      = "/i"
-	uFav       = "/favicon.ico"
-	uCss       = "/custom.css"
-	maxData    = 1048576 // 1MB
+	schemeHost      = "http://localhost"
+	listen          = ":9154"
+	uApiGet         = "/api/v1/get/"
+	uApiNew         = "/api/v1/new"
+	uGet            = "/g"
+	uInfo           = "/i"
+	uFav            = "/favicon.ico"
+	uCss            = "/custom.css"
+	maxData         = 1048576 // 1MB
+	defaultValidity = 7       // days
+	expiryCheck     = 30      // minutes
 )
 
 func main() {
 	store := make(secretStore)
-	store.NewEntry("secret", 100, "test")
+	store.NewEntry("secret", 100, 0, "test")
+	go store.Expiry()
 
 	tView := template.New("view")
 	tView.Parse(htmlMaster)
