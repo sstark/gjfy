@@ -31,13 +31,9 @@ func Log(handler http.Handler) http.Handler {
 	})
 }
 
-func isAuthorized(entry StoreEntry) bool {
-	return true
-}
-
 func main() {
 	store := make(secretStore)
-	store.NewEntry("secret", 100, 0, "test")
+	store.NewEntry("secret", 100, 0, "_authtoken_", "test")
 	go store.Expiry()
 
 	tView := template.New("view")
@@ -81,7 +77,7 @@ func main() {
 				panic(err)
 			}
 		}
-		if !isAuthorized(entry) {
+		if !isAuthorized(&entry) {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintln(w, `{"error":"unauthorized"}`)
 		} else {

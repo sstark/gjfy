@@ -54,18 +54,18 @@ const (
 	<div id="main">
 	<table id="info">
 	<tr>
-		<th>Url</th>
-		<th>PathQuery</th>
+		<th>Id</th>
 		<th>MaxClicks</th>
 		<th>Clicks</th>
 		<th>DateAdded</th>
+		<th>AuthToken</th>
 	</tr>
 	<tr>
-		<td><a href="{{.Url}}">{{.Url}}</a></td>
-		<td>{{.PathQuery}}</td>
+		<td><a href="{{.Url}}">{{.Id}}</a></td>
 		<td>{{.MaxClicks}}</td>
 		<td>{{.Clicks}}</td>
 		<td>{{.DateAdded}}</td>
+		<td>{{.AuthToken}}</td>
 	</tr>
 	</table>
 	</div>

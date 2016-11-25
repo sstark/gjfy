@@ -3,16 +3,16 @@
 POSTURL="http://localhost:9154/api/v1/new"
 
 whence jq >/dev/null 2>&1 || { print -u2 "jq utility not found"; exit 1 }
-if [[ -z $1 ]]
+if [[ $# -lt 2 ]]
 then
-    print -u2 "usage: $0 <secret>"
+    print -u2 "usage: $0 <authtoken> <secret>"
     exit 2
 fi
 
-if [[ -z $2 ]]
+if [[ -z $3 ]]
 then
-    postdata="{\"secret\":\"$1\"}"
+    postdata="{\"auth_token\":\"$1\",\"secret\":\"$2\"}"
 else
-    postdata="{\"secret\":\"$1\",\"max_clicks\":$2}"
+    postdata="{\"auth_token\":\"$1\",\"secret\":\"$2\",\"max_clicks\":$3}"
 fi
 curl -s -X POST -d $postdata $POSTURL | jq -r '.url,.api_url,.error | select (.!=null)'
