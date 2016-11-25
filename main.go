@@ -31,6 +31,10 @@ func Log(handler http.Handler) http.Handler {
 	})
 }
 
+func isAuthorized(entry StoreEntry) bool {
+	return true
+}
+
 func main() {
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "test")
@@ -70,20 +74,24 @@ func main() {
 		if err := r.Body.Close(); err != nil {
 			panic(err)
 		}
+		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.Unmarshal(body, &entry); err != nil {
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 			w.WriteHeader(422) // unprocessable entity
 			if err := json.NewEncoder(w).Encode(err); err != nil {
 				panic(err)
 			}
 		}
-		id := store.AddEntry(entry, "")
-		newEntry, _ := store.GetEntryInfoHidden(id)
-		log.Println("New ID:", id)
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusCreated)
-		if err := json.NewEncoder(w).Encode(newEntry); err != nil {
-			panic(err)
+		if !isAuthorized(entry) {
+			w.WriteHeader(http.StatusUnauthorized)
+			fmt.Fprintln(w, `{"error":"unauthorized"}`)
+		} else {
+			id := store.AddEntry(entry, "")
+			newEntry, _ := store.GetEntryInfoHidden(id)
+			log.Println("New ID:", id)
+			w.WriteHeader(http.StatusCreated)
+			if err := json.NewEncoder(w).Encode(newEntry); err != nil {
+				panic(err)
+			}
 		}
 	})
 
