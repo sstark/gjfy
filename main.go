@@ -24,6 +24,13 @@ const (
 	expiryCheck     = 30      // minutes
 )
 
+func Log(handler http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Printf("%s \"%s %s %s\" \"%s\"", r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+		handler.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "test")
@@ -40,7 +47,6 @@ func main() {
 	tViewInfo.Parse(htmlViewInfo)
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
 		id := r.URL.Path[len(uApiGet):]
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if entry, ok := store.GetEntryInfo(id); !ok {
@@ -57,7 +63,6 @@ func main() {
 
 	http.HandleFunc(uApiNew, func(w http.ResponseWriter, r *http.Request) {
 		var entry StoreEntry
-		log.Println(r)
 		body, err := ioutil.ReadAll(io.LimitReader(r.Body, maxData))
 		if err != nil {
 			panic(err)
@@ -74,7 +79,7 @@ func main() {
 		}
 		id := store.AddEntry(entry, "")
 		newEntry, _ := store.GetEntryInfoHidden(id)
-		log.Println(id)
+		log.Println("New ID:", id)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusCreated)
 		if err := json.NewEncoder(w).Encode(newEntry); err != nil {
@@ -83,7 +88,6 @@ func main() {
 	})
 
 	http.HandleFunc(uGet, func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
 		id := r.URL.Query().Get("id")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
@@ -96,7 +100,6 @@ func main() {
 	})
 
 	http.HandleFunc(uInfo, func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
 		id := r.URL.Query().Get("id")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
@@ -108,19 +111,17 @@ func main() {
 	})
 
 	http.HandleFunc(uFav, func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
 		w.Header().Set("Content-Type", "image/x-icon")
 		w.WriteHeader(http.StatusOK)
 		w.Write(favicon)
 	})
 
 	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r)
 		css := tryReadFile(cssFileName)
 		w.Header().Set("Content-Type", "text/css")
 		w.WriteHeader(http.StatusOK)
 		w.Write(css)
 	})
 
-	log.Fatal(http.ListenAndServe(listen, nil))
+	log.Fatal(http.ListenAndServe(listen, Log(http.DefaultServeMux)))
 }
