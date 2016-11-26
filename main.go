@@ -36,6 +36,8 @@ func main() {
 	store.NewEntry("secret", 100, 0, "_authtoken_", "test")
 	go store.Expiry()
 
+	auth := makeTokenDB()
+
 	tView := template.New("view")
 	tView.Parse(htmlMaster)
 	tView.Parse(htmlView)
@@ -77,7 +79,7 @@ func main() {
 				panic(err)
 			}
 		}
-		if !isAuthorized(&entry) {
+		if !auth.isAuthorized(&entry) {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintln(w, `{"error":"unauthorized"}`)
 		} else {
