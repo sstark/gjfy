@@ -34,11 +34,11 @@ Options
 -------
 
 Custom CSS styling can by applied by placing a file "custom.css" in either
-/etc/gjfy/custom.css or $PWD/custom.css.
+`/etc/gjfy/custom.css` or `$PWD/custom.css`.
 
-An authentication token database should placed in either /etc/gjfy/auth.db or
-$PWD/auth.db. An example file is distributed with the software. New secrets can
-only be created with a valid auth token in the POST request.
+An authentication token database should placed in either `/etc/gjfy/auth.db` or
+`$PWD/auth.db`. An example file is distributed with the software. New secrets
+can only be created with a valid auth token in the POST request.
 
 $PWD/\<file\> will take precedence for above options.
 
@@ -55,10 +55,10 @@ client (gjfy-post) is included. Basically a request looks like this:
 
 By sending this to `/api/v1/new` you create a new URL which is a hash over that
 json structure. The reply from the server will tell you this link in both, a
-user friendly version and in an API version. Invocation of that link will immediately
-lead to deletion of the secret in the server. However, there is an exception:
-you can post a `"max_clicks":n` variable along with the json and it will allow up
-to `n` clicks.
+user friendly version and in an API version. Invocation of that link will
+immediately lead to deletion of the secret in the server. However, there is an
+exception: you can post a `"max_clicks":n` variable along with the json and it
+will allow up to `n` clicks.
 
 The authentication token sent with the request will not be stored in the
 server. Instead, the associated email address will be stored with the secret.
@@ -68,6 +68,15 @@ link is clicked.
 A timeout can be set by including `"valid_for:n"` in the request. The secret
 will become invalid after n days, even if not clicked.
 
+gjfy-post
+---------
+
+gjfy-post is a demonstration client using zsh, curl and jq.
+
+  usage: ./gjfy-post <authtoken> <secret> [maxclicks]
+
+Required arguments are authtoken and the secret itself. Please note that
+providing the secret this way makes it readable in the system process listing!
 
 Upcoming features
 -----------------
@@ -78,4 +87,3 @@ Upcoming features
   - Mail notification to sender
   - Memory protection in server binary
   - customizing of HTML
-
