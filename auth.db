@@ -2,5 +2,9 @@
     {
         "token": "test",
         "email": "test@example.org"
+    },
+    {
+        "token": "test2",
+        "email": "other@example.org"
     }
 ]

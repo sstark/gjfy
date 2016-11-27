@@ -24,7 +24,6 @@ func makeTokenDB() TokenDB {
 		log.Println("error reading auth token db:", err)
 	}
 	log.Printf("found %d auth tokens\n", len(tokens))
-	log.Printf("%v\n", tokens)
 	return tokens
 }
 
