@@ -32,7 +32,16 @@ binary for easy deployment.
 Running
 -------
 
-Just run the binary. There are currently no command line parameters.
+Just run the binary. Choose the IP address and port gjfy listens on with the
+`-listen` parameter.
+
+Examples:
+
+    gjfy -listen '0.0.0.0:1234'    # listen on all IPv4 addresses
+    gjfy -listen '[::1]:4123'      # listen on localhost, IPv6 only
+    gjfy -listen ':6234'           # listen on all addresses, IPv4 and IPv6
+
+Use `gjfy -help` for help.
 
 Options
 -------
@@ -86,7 +95,6 @@ Upcoming features
 -----------------
 
   - unit tests
-  - IP/port selection. It's currently hardcoded to localhost:9154
   - TLS support. You can use a reverse proxy for now
   - Mail notification to sender
   - Memory protection in server binary

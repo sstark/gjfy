@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"html/template"
 	"io"
@@ -14,8 +15,8 @@ import (
 )
 
 const (
-	schemeHost      = "http://localhost"
-	listen          = ":9154"
+	scheme          = "http://"
+	listenDefault   = ":9154"
 	uApiGet         = "/api/v1/get/"
 	uApiNew         = "/api/v1/new"
 	uGet            = "/g"
@@ -28,8 +29,9 @@ const (
 )
 
 var (
-	auth TokenDB
-	css  []byte
+	auth   TokenDB
+	css    []byte
+	listen *string
 )
 
 func Log(handler http.Handler) http.Handler {
@@ -45,6 +47,9 @@ func updateFiles() {
 }
 
 func main() {
+	listen = flag.String("listen", listenDefault, "listen on IP:port")
+	flag.Parse()
+
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "_authtoken_", "test")
 	go store.Expiry()
@@ -151,5 +156,6 @@ func main() {
 		w.Write(css)
 	})
 
-	log.Fatal(http.ListenAndServe(listen, Log(http.DefaultServeMux)))
+	log.Println("listening on", *listen)
+	log.Fatal(http.ListenAndServe(*listen, Log(http.DefaultServeMux)))
 }
