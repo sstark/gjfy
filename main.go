@@ -8,6 +8,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 const (
@@ -24,6 +27,11 @@ const (
 	expiryCheck     = 30      // minutes
 )
 
+var (
+	auth TokenDB
+	css  []byte
+)
+
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s \"%s %s %s\" \"%s\"", r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
@@ -31,12 +39,27 @@ func Log(handler http.Handler) http.Handler {
 	})
 }
 
+func updateFiles() {
+	auth = makeTokenDB()
+	css = tryReadFile(cssFileName)
+}
+
 func main() {
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "_authtoken_", "test")
 	go store.Expiry()
 
-	auth := makeTokenDB()
+	updateFiles()
+
+	sighup := make(chan os.Signal, 1)
+	signal.Notify(sighup, syscall.SIGHUP)
+	go func() {
+		for {
+			<-sighup
+			log.Println("reloading configuration...")
+			updateFiles()
+		}
+	}()
 
 	tView := template.New("view")
 	tView.Parse(htmlMaster)
@@ -123,7 +146,6 @@ func main() {
 	})
 
 	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
-		css := tryReadFile(cssFileName)
 		w.Header().Set("Content-Type", "text/css")
 		w.WriteHeader(http.StatusOK)
 		w.Write(css)
