@@ -17,6 +17,10 @@ need a TLS connection.
 
 There is no persistency: If the server process ends, all secrets are gone.
 
+Please be careful: Using a tool like gjfy is only advised when all other
+options are even less secure (mail, e-mail, phone). In any case, if you send a
+password, the receiver should be told to change it as soon as possible.
+
 Building
 --------
 
@@ -73,7 +77,7 @@ gjfy-post
 
 gjfy-post is a demonstration client using zsh, curl and jq.
 
-  usage: ./gjfy-post <authtoken> <secret> [maxclicks]
+    usage: ./gjfy-post <authtoken> <secret> [maxclicks]
 
 Required arguments are authtoken and the secret itself. Please note that
 providing the secret this way makes it readable in the system process listing!
