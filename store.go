@@ -65,8 +65,8 @@ func (st secretStore) GetEntry(id string) (se StoreEntry, ok bool) {
 func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
 	pathQuery := uGet + "?id=" + id
-	url := scheme + *listen + pathQuery
-	apiurl := scheme + *listen + uApiGet + id
+	url := getURLBase() + pathQuery
+	apiurl := getURLBase() + uApiGet + id
 	return StoreEntryInfo{entry, id, pathQuery, url, apiurl}, ok
 }
 

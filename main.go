@@ -11,11 +11,13 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 )
 
 const (
 	scheme          = "http://"
+	defaultHostname = "localhost"
 	listenDefault   = ":9154"
 	uApiGet         = "/api/v1/get/"
 	uApiNew         = "/api/v1/new"
@@ -44,6 +46,13 @@ func Log(handler http.Handler) http.Handler {
 func updateFiles() {
 	auth = makeTokenDB()
 	css = tryReadFile(cssFileName)
+}
+
+func getURLBase() (urlbase string) {
+	sl := strings.Split(*listen, ":")
+	port := sl[len(sl)-1]
+	urlbase = fmt.Sprintf("%s%s:%s/", scheme, defaultHostname, port)
+	return
 }
 
 func main() {
@@ -156,6 +165,7 @@ func main() {
 		w.Write(css)
 	})
 
+	log.Printf("using '%s' as URL base\n", getURLBase())
 	log.Println("listening on", *listen)
 	log.Fatal(http.ListenAndServe(*listen, Log(http.DefaultServeMux)))
 }
