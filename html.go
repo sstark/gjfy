@@ -3,11 +3,12 @@ package main
 const (
 	htmlMaster = `
 	{{define "master"}}
+	<!DOCTYPE html>
 	<html>
 	<head>
 		<title>GJFY{{block "title" .}}{{end}}</title>
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-		<link rel="stylesheet" type="text/css" href="custom.css" />
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="stylesheet" type="text/css" href="custom.css">
 	</head>
 	<body>
 	<div id="contentcontainer">
