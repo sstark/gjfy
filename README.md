@@ -32,14 +32,18 @@ binary for easy deployment.
 Running
 -------
 
-Just run the binary. Choose the IP address and port gjfy listens on with the
-`-listen` parameter.
+Choose the IP address and port gjfy listens on with the `-listen` parameter.
 
 Examples:
 
     gjfy -listen '0.0.0.0:1234'    # listen on all IPv4 addresses
     gjfy -listen '[::1]:4123'      # listen on localhost, IPv6 only
     gjfy -listen ':6234'           # listen on all addresses, IPv4 and IPv6
+
+To tell gjfy its name as seen by users of the service, use the `-urlbase` parameter like so:
+
+    gjfy -urlbase 'https://gjfy.example.org'
+    gjfy -urlbase 'https://gjfy.example.org:4123'
 
 Use `gjfy -help` for help.
 
