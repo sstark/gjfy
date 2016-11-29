@@ -24,8 +24,8 @@ password, the receiver should be told to change it as soon as possible.
 Building
 --------
 
-Download the code and run "go build", it will create a single statically linked
-binary for easy deployment.
+Download the code and run "go build", it will create a single binary file for
+easy deployment.
 
 `go get github.com/sstark/gjfy` will also work.
 
