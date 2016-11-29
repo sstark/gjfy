@@ -83,7 +83,8 @@ Future versions of the server would allow for email notification in case the
 link is clicked.
 
 A timeout can be set by including `"valid_for:n"` in the request. The secret
-will become invalid after n days, even if not clicked.
+will become invalid after n days, even if not clicked. The default timeout is 7
+days.
 
 gjfy-post
 ---------
