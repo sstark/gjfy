@@ -99,7 +99,6 @@ providing the secret this way makes it readable in the system process listing!
 Upcoming features
 -----------------
 
-  - unit tests
   - TLS support. You can use a reverse proxy for now
   - Mail notification to sender
   - Memory protection in server binary
