@@ -11,8 +11,7 @@ import (
 var mockNow = time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
 
 func TestHashStruct(t *testing.T) {
-	now := mockNow
-	var in = StoreEntry{"secret1", 5, 0, now, 3, "authtoken"}
+	var in = StoreEntry{"secret1", 5, 0, mockNow, 3, "authtoken"}
 	var wanted = "0Y3Mkcz36xM0hwrSnVw3PMebEMfa27Oi1mmuaELD4-Q"
 	got := hashStruct(in)
 	if got != wanted {
@@ -38,24 +37,24 @@ type StoreEntryTestPair struct {
 	out StoreEntryOutput
 }
 
+var StoreEntryTestPairs = []StoreEntryTestPair{
+	{
+		StoreEntryInput{"secret1", 5, 3, "authtoken", "id1"},
+		StoreEntryOutput{StoreEntry{"secret1", 5, 0, mockNow, 3, "authtoken"}, "id1"},
+	},
+	{
+		StoreEntryInput{"secret2", 2, 3, "authtoken", ""},
+		StoreEntryOutput{StoreEntry{"secret2", 2, 0, mockNow, 3, "authtoken"}, "iLbLBYFzULLUfB84p8VHldWd4VnHg0mZq_5S45p0lEk"},
+	},
+}
+
 func TestStore_NewEntry(t *testing.T) {
-	now := mockNow
 	monkey.Patch(time.Now, func() time.Time {
-		return now
+		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	var StoreNewEntryPairs = []StoreEntryTestPair{
-		{
-			StoreEntryInput{"secret1", 5, 3, "authtoken", "id1"},
-			StoreEntryOutput{StoreEntry{"secret1", 5, 0, now, 3, "authtoken"}, "id1"},
-		},
-		{
-			StoreEntryInput{"secret2", 2, 3, "authtoken", ""},
-			StoreEntryOutput{StoreEntry{"secret2", 2, 0, now, 3, "authtoken"}, "iLbLBYFzULLUfB84p8VHldWd4VnHg0mZq_5S45p0lEk"},
-		},
-	}
 	store := make(secretStore)
-	for _, p := range StoreNewEntryPairs {
+	for _, p := range StoreEntryTestPairs {
 		outId := store.NewEntry(p.in.secret, p.in.maxClicks, p.in.validFor, p.in.authToken, p.in.id)
 		if outId != p.out.id {
 			t.Errorf("got %v, wanted %v", outId, p.out.id)
