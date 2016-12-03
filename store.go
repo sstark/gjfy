@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+const (
+	hiddenString = "#HIDDEN#"
+)
+
 // In-memory representation of a secret.
 type StoreEntry struct {
 	Secret    string    `json:"secret"`
@@ -74,7 +78,7 @@ func (st secretStore) GetEntryInfo(id string) (si StoreEntryInfo, ok bool) {
 // hides the "secret" value.
 func (st secretStore) GetEntryInfoHidden(id string) (si StoreEntryInfo, ok bool) {
 	si, ok = st.GetEntryInfo(id)
-	si.Secret = "#HIDDEN#"
+	si.Secret = hiddenString
 	return
 }
 
