@@ -71,7 +71,7 @@ func TestStore_NewEntry(t *testing.T) {
 func TestStore_GetEntryInfo(t *testing.T) {
 	store := make(secretStore)
 	store.NewEntry("secret", 1, 1, "auth", "testid")
-	out, ok := store.GetEntryInfo("testid")
+	out, ok := store.GetEntryInfoHidden("testid")
 	if !ok {
 		t.Errorf("new entry not found under %v", "testid")
 	}
@@ -82,5 +82,9 @@ func TestStore_GetEntryInfo(t *testing.T) {
 	wanted = "http://localhost:/g?id=testid"
 	if out.Url != wanted {
 		t.Errorf("got %v, wanted %v", out.Url, wanted)
+	}
+	wanted = hiddenString
+	if out.Secret != wanted {
+		t.Errorf("got %v, wanted %v", out.Secret, wanted)
 	}
 }
