@@ -13,7 +13,7 @@ var mockNow = time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
 func TestHashStruct(t *testing.T) {
 	now := mockNow
 	var in = StoreEntry{"secret1", 5, 0, now, 3, "authtoken"}
-	var wanted = "gzkfWNPIqulg2y_1u0p9AErnKlNTGoT9n7shUSbNvZI"
+	var wanted = "0Y3Mkcz36xM0hwrSnVw3PMebEMfa27Oi1mmuaELD4-Q"
 	got := hashStruct(in)
 	if got != wanted {
 		t.Errorf("got %v, wanted %v", got, wanted)
@@ -51,7 +51,7 @@ func TestStore_NewEntry(t *testing.T) {
 		},
 		{
 			StoreEntryInput{"secret2", 2, 3, "authtoken", ""},
-			StoreEntryOutput{StoreEntry{"secret2", 2, 0, now, 3, "authtoken"}, "wGcpafHG6bQk3RIqii3ggMHi0_AQdJjgQ-f3FHsCzZQ"},
+			StoreEntryOutput{StoreEntry{"secret2", 2, 0, now, 3, "authtoken"}, "iLbLBYFzULLUfB84p8VHldWd4VnHg0mZq_5S45p0lEk"},
 		},
 	}
 	store := make(secretStore)
