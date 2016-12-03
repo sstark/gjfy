@@ -1,7 +1,6 @@
 package main
 
 import (
-	//	"fmt"
 	"github.com/bouk/monkey"
 	"reflect"
 	"testing"
@@ -66,5 +65,22 @@ func TestStore_NewEntry(t *testing.T) {
 		if !reflect.DeepEqual(p.out.StoreEntry, outEntry) {
 			t.Errorf("got %v, wanted %v", p.out.StoreEntry, outEntry)
 		}
+	}
+}
+
+func TestStore_GetEntryInfo(t *testing.T) {
+	store := make(secretStore)
+	store.NewEntry("secret", 1, 1, "auth", "testid")
+	out, ok := store.GetEntryInfo("testid")
+	if !ok {
+		t.Errorf("new entry not found under %v", "testid")
+	}
+	wanted := "http://localhost:/api/v1/get/testid"
+	if out.ApiUrl != wanted {
+		t.Errorf("got %v, wanted %v", out.ApiUrl, wanted)
+	}
+	wanted = "http://localhost:/g?id=testid"
+	if out.Url != wanted {
+		t.Errorf("got %v, wanted %v", out.Url, wanted)
 	}
 }
