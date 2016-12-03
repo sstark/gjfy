@@ -31,10 +31,11 @@ const (
 )
 
 var (
-	auth     TokenDB
-	css      []byte
-	fListen  string
-	fURLBase string
+	auth      TokenDB
+	css       []byte
+	fListen   string
+	fURLBase  string
+	configDir = "/etc/gjfy"
 )
 
 func Log(handler http.Handler) http.Handler {

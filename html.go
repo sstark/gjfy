@@ -74,7 +74,6 @@ const (
 	</div>
 	{{end}}
 	`
-	configDir   = "/etc/gjfy"
 	cssFileName = "custom.css"
 )
 
