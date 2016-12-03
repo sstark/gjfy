@@ -88,3 +88,20 @@ func TestStore_GetEntryInfo(t *testing.T) {
 		t.Errorf("got %v, wanted %v", out.Secret, wanted)
 	}
 }
+
+func TestStore_Click(t *testing.T) {
+	clicks := 2
+	store := make(secretStore)
+	store.NewEntry("secret", clicks, 1, "auth", "testid")
+	_, ok := store.GetEntry("testid")
+	if !ok {
+		t.Errorf("new entry not found under %v", "testid")
+	}
+	for i := 0; i < clicks; i++ {
+		store.Click("testid")
+	}
+	_, ok = store.GetEntry("testid")
+	if ok {
+		t.Errorf("new entry found under %v, but it should not be there", "testid")
+	}
+}
