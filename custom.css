@@ -1,14 +1,12 @@
 
 body {
-    font-size: 130%;
+    font-size: 120%;
     width: 100%;
     font-family: Verdana, Tahoma, sans-serif;
     background: #dceeea;
     color: #333333;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 div {
@@ -26,15 +24,26 @@ pre#secret {
     background: #cfe0e8;
     margin: 0.5em;
     margin-top: 1em;
-    padding: 0.5em;
+    padding: 0.8em;
     border-left: 5px solid #98cee8;
 }
+
+pre#secret::-moz-selection {
+    background: white;
+}
+
+pre#secret::selection {
+    background: white;
+}
+
 div#contentcontainer {
     width: 100%;
+    margin-top: 0px;
     margin-left: 0px;
     margin-right: 0px;
     padding-left: 0px;
     padding-right: 0px;
+
 }
 div#content {
     margin-left: 0px;
@@ -51,12 +60,14 @@ div#main {
 }
 
 h2#mainheading {
-    background: #b7d7e8;
-    padding: 0.5em;
-    padding-left: 26%;
+    padding-left: 25.8%;
+    padding-right: 26%;
+    padding-top: 1.5em;
+    padding-bottom: 0.5em;
+    margin-left: 0px;
     color: #549aa5;
+    border-top: 3px solid #679db8;
 }
-
 
 table#info {
    border-collapse: collapse; 
