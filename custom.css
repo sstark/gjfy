@@ -1,9 +1,9 @@
 
 body {
-    font-size: 140%;
+    font-size: 130%;
     width: 100%;
     font-family: Verdana, Tahoma, sans-serif;
-    background: #daebe8;
+    background: #dceeea;
     color: #333333;
     margin-left: 0px;
     margin-right: 0px;
@@ -84,10 +84,16 @@ div#footer {
     margin-right: 26%;
     margin-top: 1em;
     font-style: italic;
-    border-top: 1px solid #98cee8;
+    border-top: 2px solid #98cee8;
+    padding-left: 0px;
 }
 
 #footer a {
-    color: inherit;
+    color: #679db8;
     text-decoration: none;
+}
+
+#footer a:hover {
+    color: inherit;
+    text-decoration: underline;
 }

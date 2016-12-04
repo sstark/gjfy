@@ -65,7 +65,7 @@ func main() {
 	flag.Parse()
 
 	store := make(secretStore)
-	store.NewEntry("secret", 100, 0, "_authtoken_", "test")
+	store.NewEntry("secret", 100, 0, "test@example.org", "test")
 	go store.Expiry()
 
 	updateFiles()

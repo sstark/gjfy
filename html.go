@@ -17,7 +17,8 @@ const (
 	</div>
 	{{block "footer" .}}
 		<div id="footer">
-			<a href="https://github.com/sstark/gjfy">gjfy</a>
+			This <a href="https://github.com/sstark/gjfy">gjfy</a>
+			secret was created by <a href="mailto:{{.AuthToken}}">{{.AuthToken}}</a>
 		</div>
 	{{end}}
 	</div>
