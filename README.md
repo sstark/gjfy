@@ -1,5 +1,5 @@
-gjfy - one time password link server
-====================================
+gjfy - one time link server
+===========================
 
 (Transport encryption is not implemented yet, please do not use in production!)
 
@@ -21,8 +21,32 @@ Please be careful: Using a tool like gjfy is only advised when all other
 options are even less secure (mail, e-mail, phone). In any case, if you send a
 password, the receiver should be told to change it as soon as possible.
 
+Features
+--------
+
+  - Everything in a single binary
+  - No web server or application server needed
+  - No database needed
+  - No persistence
+  - No java script
+  - Simple json API (demo client included)
+  - Simple html user interface
+  - Simple token based authentication
+
+Upcoming features
+-----------------
+
+  - TLS support. You can use a reverse proxy for now
+  - Mail notification to sender
+  - Memory protection in server binary
+  - HTML customizing
+
 Building
 --------
+
+If you do not have a go environment installed already, install it from your
+linux distribution repository (e. g. `apt-get install golang-go`) or download
+it from the [go home page](https://golang.org/dl/).
 
 Download the code and run "go build", it will create a single binary file for
 easy deployment.
@@ -95,11 +119,3 @@ gjfy-post is a demonstration client using zsh, curl and jq.
 
 Required arguments are authtoken and the secret itself. Please note that
 providing the secret this way makes it readable in the system process listing!
-
-Upcoming features
------------------
-
-  - TLS support. You can use a reverse proxy for now
-  - Mail notification to sender
-  - Memory protection in server binary
-  - customizing of HTML
