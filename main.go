@@ -47,7 +47,7 @@ func Log(handler http.Handler) http.Handler {
 }
 
 func updateFiles() {
-	auth = makeTokenDB()
+	auth = makeTokenDB(tryReadFile(authFileName))
 	css = tryReadFile(cssFileName)
 }
 

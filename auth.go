@@ -16,10 +16,9 @@ type AuthToken struct {
 
 type TokenDB []AuthToken
 
-func makeTokenDB() TokenDB {
+func makeTokenDB(b []byte) TokenDB {
 	var tokens TokenDB
-	authDB := tryReadFile(authFileName)
-	err := json.Unmarshal(authDB, &tokens)
+	err := json.Unmarshal(b, &tokens)
 	if err != nil {
 		log.Println("error reading auth token db:", err)
 	}
