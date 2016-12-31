@@ -13,6 +13,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 )
 
 const (
@@ -66,7 +67,7 @@ func main() {
 
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "test@example.org", "test")
-	go store.Expiry()
+	go store.Expiry(time.Minute * expiryCheck)
 
 	updateFiles()
 

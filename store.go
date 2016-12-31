@@ -97,10 +97,10 @@ func (st secretStore) Click(id string) {
 }
 
 // Expiry checks for expired entries at regular intervals
-func (st secretStore) Expiry() {
-	tck := time.NewTicker(time.Minute * expiryCheck)
+func (st secretStore) Expiry(interval time.Duration) {
+	tck := time.NewTicker(interval)
+	log.Printf("checking for expiration every %s\n", interval)
 	for {
-		log.Println("checking expiration")
 		now := time.Now()
 		for id, e := range st {
 			expDate := e.DateAdded
