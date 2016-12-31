@@ -105,3 +105,21 @@ func TestStore_Click(t *testing.T) {
 		t.Errorf("new entry found under %v, but it should not be there", "testid")
 	}
 }
+
+func TestStore_Expiry(t *testing.T) {
+	store := make(secretStore)
+	store.NewEntry("secret", 1, 150, "auth", "testid")
+	_, ok := store.GetEntry("testid")
+	if !ok {
+		t.Errorf("new entry not found under %v", "testid")
+	}
+	expFactor = func(v int) time.Duration {
+		return time.Millisecond * time.Duration(v)
+	}
+	go store.Expiry(time.Millisecond * 200)
+	time.Sleep(time.Millisecond * 300)
+	_, ok = store.GetEntry("testid")
+	if ok {
+		t.Errorf("new entry found under %v, but it should be expired", "testid")
+	}
+}

@@ -12,6 +12,10 @@ const (
 	hiddenString = "#HIDDEN#"
 )
 
+var (
+	expFactor = realExpFactor
+)
+
 // In-memory representation of a secret.
 type StoreEntry struct {
 	Secret    string    `json:"secret"`
@@ -96,6 +100,11 @@ func (st secretStore) Click(id string) {
 	return
 }
 
+// realExpFactor will scale the given int value to a certain amount of time
+func realExpFactor(v int) time.Duration {
+	return time.Hour * 24 * time.Duration(v)
+}
+
 // Expiry checks for expired entries at regular intervals
 func (st secretStore) Expiry(interval time.Duration) {
 	tck := time.NewTicker(interval)
@@ -104,7 +113,7 @@ func (st secretStore) Expiry(interval time.Duration) {
 		now := time.Now()
 		for id, e := range st {
 			expDate := e.DateAdded
-			expDate = expDate.Add(time.Hour * 24 * time.Duration(e.ValidFor))
+			expDate = expDate.Add(expFactor(e.ValidFor))
 			if now.After(expDate) {
 				log.Printf("%s expired\n", id)
 				delete(st, id)
