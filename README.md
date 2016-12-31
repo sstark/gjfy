@@ -26,10 +26,11 @@ Features
   - No web server or application server needed
   - No database needed
   - No persistence
-  - No java script
+  - No javascript
   - Simple json API (demo client included)
   - Simple html user interface
   - Simple token based authentication
+  - Supports IPv6, HTTP2, TLS
 
 Upcoming features
 -----------------
@@ -94,8 +95,8 @@ process.
 Usage
 -----
 
-Currently the only way to create new secrets is by using a json API. An example
-client (gjfy-post) is included. Basically a request looks like this:
+Currently the only way to create new secrets is by using the json API. An
+example client (gjfy-post) is included. Basically a request looks like this:
 
     {"auth_token":"g4uhg3iu4h5i3u4","secret":"someSecret"}
 
