@@ -22,6 +22,16 @@ func makeTokenDB(b []byte) TokenDB {
 	if err != nil {
 		log.Println("error reading auth token db:", err)
 	}
+	for i, entry := range tokens {
+		if entry.Token == "" {
+			log.Printf("token field empty or missing in entry #%d", i)
+			return nil
+		}
+		if entry.Email == "" {
+			log.Printf("email field empty or missing in entry #%d", i)
+			return nil
+		}
+	}
 	log.Printf("found %d auth tokens\n", len(tokens))
 	return tokens
 }

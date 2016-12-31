@@ -48,6 +48,9 @@ func Log(handler http.Handler) http.Handler {
 
 func updateFiles() {
 	auth = makeTokenDB(tryReadFile(authFileName))
+	if auth == nil {
+		log.Println("auth db could not be loaded, please fix and reload")
+	}
 	css = tryReadFile(cssFileName)
 }
 
