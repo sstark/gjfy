@@ -1,8 +1,6 @@
 gjfy - one time link server
 ===========================
 
-(Transport encryption is not implemented yet, please do not use in production!)
-
 What does it do?
 ----------------
 
@@ -36,7 +34,6 @@ Features
 Upcoming features
 -----------------
 
-  - TLS support. You can use a reverse proxy for now
   - Mail notification to sender
   - Memory protection in server binary
   - HTML customizing
@@ -68,6 +65,14 @@ To tell gjfy its name as seen by users of the service, use the `-urlbase` parame
 
     gjfy -urlbase 'https://gjfy.example.org'
     gjfy -urlbase 'https://gjfy.example.org:4123'
+
+To use TLS security add the `-tls` switch:
+
+    gjfy -tls
+
+The scheme will automatically switch to https unless you set urlbase. Before
+you can turn on tls you must create a certificate file called `gjfy.crt` and a
+key file called `gjfy.key`.
 
 Use `gjfy -help` for help.
 
