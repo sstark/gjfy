@@ -180,14 +180,13 @@ func main() {
 		w.Write(css)
 	})
 
+	log.Printf("using '%s' as URL base\n", getURLBase())
 	if fTLS {
 		scheme = "https://"
-	}
-	log.Printf("using '%s' as URL base\n", getURLBase())
-	log.Println("listening on", fListen)
-	if fTLS {
+		log.Println("listening on", fListen, "with TLS")
 		log.Fatal(http.ListenAndServeTLS(fListen, crtFile, keyFile, Log(http.DefaultServeMux)))
 	} else {
+		log.Println("listening on", fListen, "without TLS")
 		log.Fatal(http.ListenAndServe(fListen, Log(http.DefaultServeMux)))
 	}
 }
