@@ -87,10 +87,13 @@ An authentication token database should placed in either `/etc/gjfy/auth.db` or
 `$PWD/auth.db`. An example file is distributed with the software. New secrets
 can only be created with a valid auth token in the POST request.
 
+If you are using TLS mode you need to put in place either `/etc/gjfy/gjfy.crt`
+or `$PWD/gjfy.crt`. Same applies to the key file `gjfy.key`.
+
 `$PWD/<file>` will take precedence over `/etc/gjfy/<file>` for above options.
 
 To trigger reloading of auth.db or custom.css you can send SIGHUP to the gjfy
-process.
+process. The TLS certificate or key won't be reloaded this way.
 
 Usage
 -----
