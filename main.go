@@ -180,10 +180,8 @@ func main() {
 		w.Write(css)
 	})
 
-	log.Printf("using '%s' as URL base\n", getURLBase())
 	if fTLS {
 		scheme = "https://"
-		log.Println("listening on", fListen, "with TLS")
 		cf := tryFile(crtFile)
 		if cf == "" {
 			log.Fatalf("unable to open %s\n", crtFile)
@@ -192,8 +190,11 @@ func main() {
 		if kf == "" {
 			log.Fatalf("unable to open %s\n", keyFile)
 		}
+		log.Printf("using '%s' as URL base\n", getURLBase())
+		log.Println("listening on", fListen, "with TLS")
 		log.Fatal(http.ListenAndServeTLS(fListen, cf, kf, Log(http.DefaultServeMux)))
 	} else {
+		log.Printf("using '%s' as URL base\n", getURLBase())
 		log.Println("listening on", fListen, "without TLS")
 		log.Fatal(http.ListenAndServe(fListen, Log(http.DefaultServeMux)))
 	}
