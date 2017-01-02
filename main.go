@@ -184,7 +184,15 @@ func main() {
 	if fTLS {
 		scheme = "https://"
 		log.Println("listening on", fListen, "with TLS")
-		log.Fatal(http.ListenAndServeTLS(fListen, crtFile, keyFile, Log(http.DefaultServeMux)))
+		cf := tryFile(crtFile)
+		if cf == "" {
+			log.Fatalf("unable to open %s\n", crtFile)
+		}
+		kf := tryFile(keyFile)
+		if kf == "" {
+			log.Fatalf("unable to open %s\n", keyFile)
+		}
+		log.Fatal(http.ListenAndServeTLS(fListen, cf, kf, Log(http.DefaultServeMux)))
 	} else {
 		log.Println("listening on", fListen, "without TLS")
 		log.Fatal(http.ListenAndServe(fListen, Log(http.DefaultServeMux)))
