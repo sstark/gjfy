@@ -1,4 +1,3 @@
-- use secstring implementation from https://github.com/worr/secstring/blob/master/secstring.go
 - header.html
 - better error handling in url handlers
 - email notification

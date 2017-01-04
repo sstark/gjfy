@@ -36,7 +36,6 @@ Upcoming features
 -----------------
 
   - Mail notification to sender
-  - Memory protection in server binary
   - HTML customizing
 
 Building
