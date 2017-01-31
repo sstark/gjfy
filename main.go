@@ -25,6 +25,7 @@ const (
 	uGet            = "/g"
 	uInfo           = "/i"
 	uFav            = "/favicon.ico"
+	uLogoSmall      = "/gjfy-logo-small.png"
 	uCss            = "/custom.css"
 	uLogo           = "/logo.png"
 	maxData         = 1048576 // 1MB
@@ -175,6 +176,12 @@ func main() {
 		w.Header().Set("Content-Type", "image/x-icon")
 		w.WriteHeader(http.StatusOK)
 		w.Write(favicon)
+	})
+
+	http.HandleFunc(uLogoSmall, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "image/png")
+		w.WriteHeader(http.StatusOK)
+		w.Write(gjfyLogoSmall)
 	})
 
 	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
