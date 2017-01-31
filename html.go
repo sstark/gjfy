@@ -75,6 +75,12 @@ const (
 	<p id="errormessage">This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
 	</div>
 	{{end}}
+	{{define "footer"}}
+		<div id="footer">
+		<p><a href="https://github.com/sstark/gjfy"><img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a>
+		</p>
+		</div>
+	{{end}}
 	`
 	cssFileName  = "custom.css"
 	logoFileName = "logo.png"
