@@ -39,7 +39,7 @@ const (
 		you memorise the secret or write it down in an appropriate way.
 	</p>
 	<p>The secret contained in this link is as follows:</p>
-	<input type="text" class="gjfy-form-control" value="{{.Secret}}">
+	<input readonly autofocus type="text" class="gjfy-form-control" value="{{.Secret}}">
 	</div>
 	{{end}}
 	`
