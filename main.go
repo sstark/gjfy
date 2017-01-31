@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -40,6 +41,7 @@ var (
 	auth      TokenDB
 	css       []byte
 	logo      []byte
+	updated   = time.Time{}
 	fListen   string
 	fURLBase  string
 	fTLS      bool
@@ -61,6 +63,7 @@ func updateFiles() {
 	}
 	css = tryReadFile(cssFileName)
 	logo = tryReadFile(logoFileName)
+	updated = time.Now()
 }
 
 func getURLBase() string {
@@ -185,15 +188,11 @@ func main() {
 	})
 
 	http.HandleFunc(uCss, func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/css")
-		w.WriteHeader(http.StatusOK)
-		w.Write(css)
+		http.ServeContent(w, r, cssFileName, updated, bytes.NewReader(css))
 	})
 
 	http.HandleFunc(uLogo, func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "image/png")
-		w.WriteHeader(http.StatusOK)
-		w.Write(logo)
+		http.ServeContent(w, r, logoFileName, updated, bytes.NewReader(logo))
 	})
 
 	if fTLS {
