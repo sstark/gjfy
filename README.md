@@ -6,9 +6,9 @@ one time link server
 What does it do?
 ----------------
 
-gjfy is a single binary web server with only one purpose: Create links that
-automatically disappear once clicked. On first click it will show a "secret",
-for instance a password that somebody wants to send to someone.
+gjfy is a single binary, standalone web server with only one purpose: Create
+links that automatically disappear once clicked. On first click it will show a
+"secret", for instance a password that somebody wants to send to someone.
 
 The idea is that if the original receiver finds the link invalid, they know
 that the secret was intercepted by a third party and the sender can reset the
