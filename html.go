@@ -12,12 +12,13 @@ const (
 	</head>
 	<body>
 	<div class="gjfy-container">
+    <img src="logo.png" alt="logo" class="gjfy-logo">
 	<div id="content">
 	{{block "content" .}}{{end}}
 	</div>
 	{{block "footer" .}}
 		<div id="footer">
-		<p>This <a href="https://github.com/sstark/gjfy"><img src="logo.png" alt="logo" class="gjfy-footer-logo-small"></a> secret was created by
+		<p>This <a href="https://github.com/sstark/gjfy"><img src="gjfy-footer-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a> secret was created by
 			<a href="mailto:{{.AuthToken}}">{{.AuthToken}} </a>
 		</p>
 		</div>
@@ -75,7 +76,8 @@ const (
 	</div>
 	{{end}}
 	`
-	cssFileName = "custom.css"
+	cssFileName  = "custom.css"
+	logoFileName = "logo.png"
 )
 
 var (

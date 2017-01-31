@@ -26,6 +26,7 @@ const (
 	uInfo           = "/i"
 	uFav            = "/favicon.ico"
 	uCss            = "/custom.css"
+	uLogo           = "/logo.png"
 	maxData         = 1048576 // 1MB
 	defaultValidity = 7       // days
 	expiryCheck     = 30      // minutes
@@ -37,6 +38,7 @@ const (
 var (
 	auth      TokenDB
 	css       []byte
+	logo      []byte
 	fListen   string
 	fURLBase  string
 	fTLS      bool
@@ -57,6 +59,7 @@ func updateFiles() {
 		log.Println("auth db could not be loaded, please fix and reload")
 	}
 	css = tryReadFile(cssFileName)
+	logo = tryReadFile(logoFileName)
 }
 
 func getURLBase() string {
@@ -178,6 +181,12 @@ func main() {
 		w.Header().Set("Content-Type", "text/css")
 		w.WriteHeader(http.StatusOK)
 		w.Write(css)
+	})
+
+	http.HandleFunc(uLogo, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "image/png")
+		w.WriteHeader(http.StatusOK)
+		w.Write(logo)
 	})
 
 	if fTLS {
