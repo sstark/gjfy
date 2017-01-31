@@ -6,19 +6,20 @@ const (
 	<!DOCTYPE html>
 	<html>
 	<head>
-		<title>GJFY{{block "title" .}}{{end}}</title>
+		<title>gjfy{{block "title" .}}{{end}}</title>
 		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<link rel="stylesheet" type="text/css" href="custom.css">
 	</head>
 	<body>
-	<div id="contentcontainer">
+	<div class="gjfy-container">
 	<div id="content">
 	{{block "content" .}}{{end}}
 	</div>
 	{{block "footer" .}}
 		<div id="footer">
-			This <a href="https://github.com/sstark/gjfy">gjfy</a>
-			secret was created by <a href="mailto:{{.AuthToken}}">{{.AuthToken}}</a>
+		<p>This <a href="https://github.com/sstark/gjfy"><img src="logo.png" alt="logo" class="gjfy-footer-logo-small"></a> secret was created by
+			<a href="mailto:{{.AuthToken}}">{{.AuthToken}} </a>
+		</p>
 		</div>
 	{{end}}
 	</div>
@@ -29,16 +30,15 @@ const (
 	htmlView = `
 	{{define "title"}} - View Secret{{end}}
 	{{define "content"}}
-	<h2 id="mainheading">The following text is just for you:</h2>
 	<div id="main">
-	<div>
+	<p class="lead">
 		The link you invoked contains a secret (a password for example)
 		somebody wants to share with you. It will be valid only for a short
 		time and you may not be able to invoke it again. Please make sure
 		you memorise the secret or write it down in an appropriate way.
-	</div>
-	<div>The secret contained in this link is as follows:</div>
-	<pre id="secret">{{.Secret}}</pre>
+	</p>
+	<p>The secret contained in this link is as follows:</p>
+	<input type="text" class="gjfy-form-control" value="{{.Secret}}">
 	</div>
 	{{end}}
 	`
