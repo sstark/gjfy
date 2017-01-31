@@ -1,5 +1,7 @@
-gjfy - one time link server
-===========================
+![gjfy](https://raw.githubusercontent.com/sstark/gjfy/master/logo.png)
+
+one time link server
+====================
 
 What does it do?
 ----------------
