@@ -131,3 +131,13 @@ gjfy-post is a demonstration client using zsh, curl and jq.
 
 Required arguments are authtoken and the secret itself. Please note that
 providing the secret this way makes it readable in the system process listing!
+
+You can change the default URL for gjfy-post by setting the environment
+variable `GJFY_POSTURL`.
+
+FAQ
+---
+
+Q: How do you pronounce gjfy?
+
+A: It is pronounced like "jiffy".
