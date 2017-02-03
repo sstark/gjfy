@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-POSTURL="http://localhost:9154/api/v1/new"
+POSTURL="${GJFY_POSTURL:-http://localhost:9154/api/v1/new}"
 
 whence jq >/dev/null 2>&1 || { print -u2 "jq utility not found"; exit 1 }
 if [[ $# -lt 2 ]]
