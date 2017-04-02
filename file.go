@@ -7,7 +7,7 @@ import (
 	"path"
 )
 
-// tryFile takes a _filename_ and uses tryFile() to find the file and
+// tryReadFile takes a _filename_ and uses tryFile() to find the file and
 // eventually return its contents. If the files was not found or is unreadable
 // returns an empty byte slice.
 func tryReadFile(fn string) []byte {
