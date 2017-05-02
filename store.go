@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -86,8 +87,9 @@ func (st secretStore) GetEntryInfoHidden(id string) (si StoreEntryInfo, ok bool)
 	return
 }
 
-// Click increases the click counter for an entry.
-func (st secretStore) Click(id string) {
+// Click increases the click counter for an entry and sends a notification
+func (st secretStore) Click(id string, r *http.Request) {
+	var msg string
 	entry, ok := st.GetEntry(id)
 	if ok {
 		if entry.Clicks < entry.MaxClicks-1 {
@@ -96,6 +98,16 @@ func (st secretStore) Click(id string) {
 		} else {
 			delete(st, id)
 		}
+		msg = fmt.Sprintf(`
+Id:          %s
+Clicked:     %d time(s)
+Clicks left: %d
+Request:     %s %s %s %s
+User-Agent:  %s
+`,
+			id, entry.Clicks, entry.MaxClicks-entry.Clicks,
+			r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+		NotifyMail(entry.AuthToken, msg)
 	}
 	return
 }

@@ -123,7 +123,7 @@ func main() {
 			w.WriteHeader(http.StatusNotFound)
 			fmt.Fprintln(w, "{}")
 		} else {
-			store.Click(id)
+			store.Click(id, r)
 			w.WriteHeader(http.StatusOK)
 			if err := json.NewEncoder(w).Encode(entry); err != nil {
 				panic(err)
@@ -167,7 +167,7 @@ func main() {
 			w.WriteHeader(http.StatusNotFound)
 			tViewErr.ExecuteTemplate(w, "master", nil)
 		} else {
-			store.Click(id)
+			store.Click(id, r)
 			w.WriteHeader(http.StatusOK)
 			tView.ExecuteTemplate(w, "master", entry)
 		}
