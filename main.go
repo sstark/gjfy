@@ -97,6 +97,9 @@ func main() {
 		}
 	}()
 
+	tIndex := template.New("index")
+	tIndex.Parse(htmlMaster)
+	tIndex.Parse(htmlIndex)
 	tView := template.New("view")
 	tView.Parse(htmlMaster)
 	tView.Parse(htmlView)
@@ -106,6 +109,11 @@ func main() {
 	tViewInfo := template.New("viewInfo")
 	tViewInfo.Parse(htmlMaster)
 	tViewInfo.Parse(htmlViewInfo)
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		tIndex.ExecuteTemplate(w, "master", nil)
+	})
 
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len(uApiGet):]

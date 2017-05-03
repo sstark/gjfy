@@ -28,6 +28,25 @@ const (
 	</html>
 	{{end}}
 	`
+	htmlIndex = `
+	{{define "title"}} - one time links{{end}}
+	{{define "content"}}
+	<div id="main">
+	<h1>gjfy - one time links</h1>
+	<p class="lead">
+		Create links that automatically disappear once clicked. On first click
+		it will show a "secret", for instance a password that somebody wants to
+		send to someone.</br>
+		As a user you normally should not need to visit this index page.
+	</p>
+	<ul>
+		<li><a href="https://github.com/sstark/gjfy">gjfy Homepage</a>
+		<li><a href="client">Download gjfy command line client</a>
+	</ul>
+	</p>
+	</div>
+	{{end}}
+	`
 	htmlView = `
 	{{define "title"}} - View Secret{{end}}
 	{{define "content"}}

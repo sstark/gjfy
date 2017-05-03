@@ -47,6 +47,14 @@ a:hover {
     line-height: 1.4;
 }
 
+div#main ul {
+    list-style: none;
+    font-size: 21px;
+    margin-bottom: 40px;
+    font-weight: 300;
+    line-height: 1.4;
+}
+
 .gjfy-form-control {
 	font-family: inherit;
     display: block;
