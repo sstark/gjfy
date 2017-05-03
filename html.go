@@ -17,11 +17,6 @@ const (
 	{{block "content" .}}{{end}}
 	</div>
 	{{block "footer" .}}
-		<div id="footer">
-		<p>This <a href="https://github.com/sstark/gjfy"><img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a> secret was created by
-			<a href="mailto:{{.AuthToken}}">{{.AuthToken}} </a>
-		</p>
-		</div>
 	{{end}}
 	</div>
 	</body>
@@ -40,8 +35,9 @@ const (
 		As a user you normally should not need to visit this index page.
 	</p>
 	<ul>
-		<li><a href="https://github.com/sstark/gjfy">gjfy Homepage</a>
-		<li><a href="client">Download gjfy command line client</a>
+		<li><a href="https://github.com/sstark/gjfy">
+			<img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"> Homepage</a>
+		<li><a href="gjfy-post">Download command line client</a>
 	</ul>
 	</p>
 	</div>
@@ -60,6 +56,13 @@ const (
 	<p>The secret contained in this link is as follows:</p>
 	<input readonly autofocus type="text" class="gjfy-form-control" value="{{.Secret}}">
 	</div>
+	{{end}}
+	{{block "footer" .}}
+		<div id="footer">
+		<p>This <a href="https://github.com/sstark/gjfy"><img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a> secret was created by
+			<a href="mailto:{{.AuthToken}}">{{.AuthToken}} </a>
+		</p>
+		</div>
 	{{end}}
 	`
 	htmlViewInfo = `
