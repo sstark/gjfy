@@ -125,7 +125,7 @@ days.
 gjfy-post
 ---------
 
-gjfy-post is a demonstration client using zsh, curl and jq.
+gjfy-post is a demonstration client using bash, curl and jq.
 
     usage: ./gjfy-post <authtoken> <secret> [maxclicks]
 
