@@ -25,6 +25,7 @@ const (
 	uApiNew         = "/api/v1/new"
 	uGet            = "/g"
 	uInfo           = "/i"
+	uClientShell    = "/gjfy-post"
 	uFav            = "/favicon.ico"
 	uLogoSmall      = "/gjfy-logo-small.png"
 	uCss            = "/custom.css"
@@ -201,6 +202,12 @@ func main() {
 
 	http.HandleFunc(uLogo, func(w http.ResponseWriter, r *http.Request) {
 		http.ServeContent(w, r, logoFileName, updated, bytes.NewReader(logo))
+	})
+
+	http.HandleFunc(uClientShell, func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/x-sh")
+		w.WriteHeader(http.StatusOK)
+		ClientShellScript(w, getURLBase()+uApiNew)
 	})
 
 	if fTLS {
