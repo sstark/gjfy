@@ -132,8 +132,15 @@ gjfy-post is a demonstration client using bash, curl and jq.
 Required arguments are authtoken and the secret itself. Please note that
 providing the secret this way makes it readable in the system process listing!
 
+The client can be downloaded from the running server by using the URL
+
+    /gjfy-post
+
+Which is also linked from the root page ("/").
+
 You can change the default URL for gjfy-post by setting the environment
-variable `GJFY_POSTURL`.
+variable `GJFY_POSTURL`. If you downloaded gify-post via the URL, it will
+have the correct URL already configured in the script.
 
 FAQ
 ---
