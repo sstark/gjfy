@@ -21,6 +21,25 @@ Please be careful: Using a tool like gjfy is only advised when all other
 options are even less secure (mail, e-mail, phone). In any case, if you send a
 password, the receiver should be told to change it as soon as possible.
 
+What makes it different?
+------------------------
+
+There are other tools available that do similar things. However, usually those
+involve installing lots of dependencies or web frameworks and often require
+setting up a database. Gjfy does not need any of this, it is completely self-
+contained.
+
+Probably the most notable difference is that secrets are only kept in memory.
+They are never written into a database or a file. So it can never happen that,
+because of a program bug or sysadmin mistake, the secrets are left on the disk.
+However, it is possible that the operating system will write part of the
+program memory into swap temporarily, which is not easy to avoid.
+
+The author believes that tools like this should not load assets from external
+sources and also that no javascript should be used. Gjfy will never do that and
+instead try to be as simple and privacy respecting as possible.
+
+
 Features
 --------
 
