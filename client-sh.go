@@ -10,8 +10,7 @@ type ClientVars struct {
 }
 
 const (
-	shellClient = `
-#!/bin/bash
+	shellClient = `#!/bin/bash
 
 POSTURL="${GJFY_POSTURL:-{{.DefaultPostURL}}}"
 
