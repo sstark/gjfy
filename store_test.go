@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/bouk/monkey"
+	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
@@ -97,8 +98,9 @@ func TestStore_Click(t *testing.T) {
 	if !ok {
 		t.Errorf("new entry not found under %v", "testid")
 	}
+	req := httptest.NewRequest("GET", "/testid", nil)
 	for i := 0; i < clicks; i++ {
-		store.Click("testid")
+		store.Click("testid", req)
 	}
 	_, ok = store.GetEntry("testid")
 	if ok {
