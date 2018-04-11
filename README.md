@@ -76,13 +76,16 @@ Installation
 
 Create a directory, e. g. `/usr/local/gjfy`. Then copy the following files to it:
 
-  - gjfy (the binary you just built)
+  - gjfy (the binary you just built)<sup>1</sup>
   - auth.db
   - logo.png
   - custom.css
 
 For integration into the various system management environments like upstart or
 systemd, check the init/ subdirectory for examples.
+
+<sup>1</sup>If you installed using "go get" the binary will be located at
+`$GOPATH/bin/gjfy`, while the rest of the files will be under `$GOPATH/src/github.com/sstark/gjfy`
 
 Running
 -------
