@@ -71,6 +71,19 @@ easy deployment.
 
 `go get github.com/sstark/gjfy` will also work.
 
+Installation
+------------
+
+Create a directory, e. g. `/usr/local/gjfy`. Then copy the following files to it:
+
+  - gjfy (the binary you just built)
+  - auth.db
+  - logo.png
+  - custom.css
+
+For integration into the various system management environments like upstart or
+systemd, check the init/ subdirectory for examples.
+
 Running
 -------
 
