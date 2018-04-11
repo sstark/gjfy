@@ -52,11 +52,11 @@ Features
   - Simple html user interface
   - Simple token based authentication
   - Supports IPv6, HTTP2, TLS
+  - Email notification
 
 Upcoming features
 -----------------
 
-  - Mail notification to sender
   - HTML customizing
 
 Building
@@ -140,6 +140,20 @@ link is clicked.
 A timeout can be set by including `"valid_for:n"` in the request. The secret
 will become invalid after n days, even if not clicked. The default timeout is 7
 days.
+
+Email notifications
+-------------------
+
+To get notified if somebody uses the one time link, add the `-notify` flag to
+the gjfy command line. gjfy will use the email address associated with the
+authentication token that was used when the secret was generated.
+
+This requires that the email sub system of the server where gjfy is running is
+configured properly. In principle, if it is possible to send an email using the
+`mail` command as the gjfy user, email notifications from gjfy should also
+work.
+
+By default, email notification is not enabled.
 
 gjfy-post
 ---------
