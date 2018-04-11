@@ -1,5 +1,5 @@
 
-Copyright © 2016 Sebastian Stark <sstark@mailbox.org>
+Copyright © 2016,2017,2018 Sebastian Stark <sstark@mailbox.org>
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
