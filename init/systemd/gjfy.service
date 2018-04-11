@@ -1,0 +1,12 @@
+[Unit]
+Description=GJFY one-time link server
+
+[Service]
+Type=simple
+User=gjfy
+Group=nogroup
+WorkingDirectory=/usr/local/gjfy
+ExecStart=/usr/local/gjfy/gjfy -listen :9154 -urlbase http://gjfy.example.org:9154
+
+[Install]
+WantedBy=multi-user.target
