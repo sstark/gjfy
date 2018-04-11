@@ -149,9 +149,8 @@ exception: you can post a `"max_clicks":n` variable along with the json and it
 will allow up to `n` clicks.
 
 The authentication token sent with the request will not be stored in the
-server. Instead, the associated email address will be stored with the secret.
-Future versions of the server would allow for email notification in case the
-link is clicked.
+server. Instead, the associated email address will be stored with the secret,
+so it can be used for email notifications (see below).
 
 A timeout can be set by including `"valid_for:n"` in the request. The secret
 will become invalid after n days, even if not clicked. The default timeout is 7
