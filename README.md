@@ -133,6 +133,33 @@ The logo.png can be replaced by a custom logo if needed. (It must be png)
 To trigger reloading of auth.db, logo.png or custom.css you can send SIGHUP to
 the gjfy process. The TLS certificate or key won't be reloaded this way.
 
+Authentication
+--------------
+
+gjfy has a very simply authentication model. Requests that add tokens are
+required to carry an *auth_token* in their json data. This *auth_token* is
+looked up in the file `auth.db` and the corresponding email address used for
+further processing and notification. If gjfy does not find the provided
+auth_token, it will reject the request.
+
+Authentication is only for adding new secrets. It does not give access to the
+secrets itself.
+
+This authentication model has some downsides and should probably be replaced by
+something better. For now just keep in mind that every user in auth.db needs to
+have an individual auth_token, because it is used to identify the "user".
+
+To add an account to `auth.db`, simply edit it using your favorite editor and
+add a section to the json list that is contained in it, like this:
+
+    {
+        "token": "thesecretauthtoken",
+        "email": "test@example.org"
+    }
+
+Afterwards send gjfy a hangup signal (`killall -HUP gjfy`) to make it reload
+the file. In the logfile you will be informed about success or failure.
+
 Usage
 -----
 
