@@ -18,25 +18,26 @@ import (
 )
 
 const (
-	myName          = "gjfy"
-	defaultHostname = "localhost"
-	listenDefault   = ":9154"
-	uApiGet         = "/api/v1/get/"
-	uApiNew         = "/api/v1/new"
-	uGet            = "/g"
-	uInfo           = "/i"
-	uClientShell    = "/gjfy-post"
-	uFav            = "/favicon.ico"
-	uLogoSmall      = "/gjfy-logo-small.png"
-	uCss            = "/custom.css"
-	uLogo           = "/logo.png"
-	maxData         = 1048576 // 1MB
-	defaultValidity = 7       // days
-	expiryCheck     = 30      // minutes
-	crtFile         = myName + ".crt"
-	keyFile         = myName + ".key"
-	TLSDefault      = false
-	notifyDefault   = false
+	myName           = "gjfy"
+	defaultHostname  = "localhost"
+	listenDefault    = ":9154"
+	uApiGet          = "/api/v1/get/"
+	uApiNew          = "/api/v1/new"
+	uGet             = "/g"
+	uInfo            = "/i"
+	uClientShell     = "/gjfy-post"
+	uFav             = "/favicon.ico"
+	uLogoSmall       = "/gjfy-logo-small.png"
+	uCss             = "/custom.css"
+	uLogo            = "/logo.png"
+	maxData          = 1048576 // 1MB
+	defaultValidity  = 7       // days
+	expiryCheck      = 30      // minutes
+	defaultMaxClicks = 1
+	crtFile          = myName + ".crt"
+	keyFile          = myName + ".key"
+	TLSDefault       = false
+	notifyDefault    = false
 )
 
 var (

@@ -54,6 +54,9 @@ func (st secretStore) AddEntry(e StoreEntry, id string) string {
 	if e.ValidFor == 0 {
 		e.ValidFor = defaultValidity
 	}
+	if e.MaxClicks == 0 {
+		e.MaxClicks = defaultMaxClicks
+	}
 	st[id] = e
 	return id
 }
@@ -92,10 +95,13 @@ func (st secretStore) Click(id string, r *http.Request) {
 	var msg string
 	entry, ok := st.GetEntry(id)
 	if ok {
-		if entry.Clicks < entry.MaxClicks-1 {
-			entry.Clicks += 1
+		// in any case increase number of clicks in our temporary entry
+		entry.Clicks += 1
+		if entry.Clicks < entry.MaxClicks {
+			// max clicks not yet reached, save our modified entry to the store
 			st[id] = entry
 		} else {
+			// max clicks reached, delete entry from store
 			delete(st, id)
 		}
 		msg = fmt.Sprintf(`
