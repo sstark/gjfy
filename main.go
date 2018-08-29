@@ -55,7 +55,17 @@ var (
 
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Printf("%s \"%s %s %s\" \"%s\"", r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+		realRemoteAddr := ""
+		xFF := r.Header.Get("X-Forwarded-For")
+		xRI := r.Header.Get("X-Real-IP")
+		if xFF != "" {
+			realRemoteAddr = xFF
+		} else if xRI != "" {
+			realRemoteAddr = xRI
+		} else {
+			realRemoteAddr = "none"
+		}
+		log.Printf("%s (%s) \"%s %s %s\" \"%s\"", r.RemoteAddr, realRemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
 		handler.ServeHTTP(w, r)
 	})
 }
