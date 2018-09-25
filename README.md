@@ -26,8 +26,11 @@ What makes it different?
 
 There are other tools available that do similar things. However, usually those
 involve installing lots of dependencies or web frameworks and often require
-setting up a database. Gjfy does not need any of this, it is completely self-
-contained.
+setting up a database. Some of them are even offering a hosted service, so
+you would be handing your secrets to a third party.
+
+Gjfy does not need any of this: it is a completely self-contained and
+on-premise system.
 
 Probably the most notable difference is that secrets are only kept in memory.
 They are never written into a database or a file. So it can never happen that,
