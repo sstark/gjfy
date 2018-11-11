@@ -53,18 +53,20 @@ var (
 	configDir = "/etc/" + myName
 )
 
+func getRealIP(r *http.Request) string {
+	xFF := r.Header.Get("X-Forwarded-For")
+	xRI := r.Header.Get("X-Real-IP")
+	if xFF != "" {
+		return xFF
+	} else if xRI != "" {
+		return xRI
+	}
+	return "none"
+}
+
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		realRemoteAddr := ""
-		xFF := r.Header.Get("X-Forwarded-For")
-		xRI := r.Header.Get("X-Real-IP")
-		if xFF != "" {
-			realRemoteAddr = xFF
-		} else if xRI != "" {
-			realRemoteAddr = xRI
-		} else {
-			realRemoteAddr = "none"
-		}
+		realRemoteAddr := getRealIP(r)
 		log.Printf("%s (%s) \"%s %s %s\" \"%s\"", r.RemoteAddr, realRemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
 		handler.ServeHTTP(w, r)
 	})

@@ -108,11 +108,12 @@ func (st secretStore) Click(id string, r *http.Request) {
 Id:          %s
 Clicked:     %d time(s)
 Clicks left: %d
-Request:     %s %s %s %s
+Request:     %s (%s) %s %s %s
 User-Agent:  %s
 `,
 			id, entry.Clicks, entry.MaxClicks-entry.Clicks,
-			r.RemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+			r.RemoteAddr, getRealIP(r), r.Method, r.URL.Path, r.Proto,
+			r.Header.Get("User-Agent"))
 		NotifyMail(entry.AuthToken, msg)
 	}
 	return
