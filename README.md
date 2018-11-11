@@ -53,14 +53,10 @@ Features
   - No javascript
   - Simple json API (demo client included)
   - Simple html user interface
+  - The CSS styling, logo and user message can be customised
   - Simple token based authentication
   - Supports IPv6, HTTP2, TLS
   - Email notification
-
-Upcoming features
------------------
-
-  - HTML customizing
 
 Building
 --------
@@ -131,10 +127,15 @@ or `$PWD/gjfy.crt`. Same applies to the key file `gjfy.key`.
 
 The logo.png can be replaced by a custom logo if needed. (It must be png)
 
+You may create a file `userMessageView.txt` that will contain the message the
+user sees when clicking on the link. It will replace the default message. HTML
+can not be used.
+
 `$PWD/<file>` will take precedence over `/etc/gjfy/<file>` for above options.
 
-To trigger reloading of auth.db, logo.png or custom.css you can send SIGHUP to
-the gjfy process. The TLS certificate or key won't be reloaded this way.
+To trigger reloading of auth.db, logo.png, custom.css or userMessageView.txt
+you can send SIGHUP to the gjfy process. The TLS certificate or key won't be
+reloaded this way.
 
 Authentication
 --------------

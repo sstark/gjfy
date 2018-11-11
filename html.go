@@ -43,15 +43,19 @@ const (
 	</div>
 	{{end}}
 	`
-	htmlView = `
-	{{define "title"}} - View Secret{{end}}
-	{{define "content"}}
-	<div id="main">
-	<p class="lead">
+	userMessageViewDefaultText = `
 		The link you invoked contains a secret (a password for example)
 		somebody wants to share with you. It will be valid only for a short
 		time and you may not be able to invoke it again. Please make sure
 		you memorise the secret or write it down in an appropriate way.
+		`
+	userMessageViewFilename = "userMessageView.txt"
+	htmlView                = `
+	{{define "title"}} - View Secret{{end}}
+	{{define "content"}}
+	<div id="main">
+	<p class="lead">
+	{{.UserMessageView}}
 	</p>
 	<p>The secret contained in this link is as follows:</p>
 	<input readonly autofocus type="text" class="gjfy-form-control" value="{{.Secret}}">

@@ -7,6 +7,16 @@ import (
 	"path"
 )
 
+// fileOrConst works like tryReadFile, except it returns a string
+// and, if the file is not accessible, a default string.
+func fileOrConst(fn string, def string) string {
+	pn := tryReadFile(fn)
+	if len(pn) > 0 {
+		return string(pn)
+	}
+	return def
+}
+
 // tryReadFile takes a _filename_ and uses tryFile() to find the file and
 // eventually return its contents. If the files was not found or is unreadable
 // returns an empty byte slice.

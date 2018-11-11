@@ -41,17 +41,23 @@ const (
 )
 
 var (
-	auth      TokenDB
-	css       []byte
-	logo      []byte
-	updated   = time.Time{}
-	fListen   string
-	fURLBase  string
-	fTLS      bool
-	fNotify   bool
-	scheme    = "http://"
-	configDir = "/etc/" + myName
+	auth            TokenDB
+	css             []byte
+	logo            []byte
+	updated         = time.Time{}
+	fListen         string
+	fURLBase        string
+	fTLS            bool
+	fNotify         bool
+	scheme          = "http://"
+	configDir       = "/etc/" + myName
+	userMessageView string
 )
+
+type viewInfoEntry struct {
+	StoreEntryInfo
+	UserMessageView string
+}
 
 func getRealIP(r *http.Request) string {
 	xFF := r.Header.Get("X-Forwarded-For")
@@ -79,6 +85,7 @@ func updateFiles() {
 	}
 	css = tryReadFile(cssFileName)
 	logo = tryReadFile(logoFileName)
+	userMessageView = fileOrConst(userMessageViewFilename, userMessageViewDefaultText)
 	updated = time.Now()
 }
 
@@ -126,7 +133,6 @@ func main() {
 	tViewInfo := template.New("viewInfo")
 	tViewInfo.Parse(htmlMaster)
 	tViewInfo.Parse(htmlViewInfo)
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		tIndex.ExecuteTemplate(w, "master", nil)
@@ -185,7 +191,8 @@ func main() {
 		} else {
 			store.Click(id, r)
 			w.WriteHeader(http.StatusOK)
-			tView.ExecuteTemplate(w, "master", entry)
+			viewEntry := viewInfoEntry{entry, userMessageView}
+			tView.ExecuteTemplate(w, "master", viewEntry)
 		}
 	})
 
