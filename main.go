@@ -105,6 +105,8 @@ func main() {
 	flag.BoolVar(&fNotify, "notify", notifyDefault, "send email notification when one time link is used")
 	flag.Parse()
 
+	log.Printf("gjfy version %s\n", version)
+
 	store := make(secretStore)
 	store.NewEntry("secret", 100, 0, "test@example.org", "test")
 	go store.Expiry(time.Minute * expiryCheck)
