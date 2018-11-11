@@ -233,6 +233,10 @@ func main() {
 		ClientShellScript(w, getURLBase()+uApiNew)
 	})
 
+	if fNotify {
+		log.Println("email notifications enabled")
+	}
+
 	if fTLS {
 		scheme = "https://"
 		cf := tryFile(crtFile)
