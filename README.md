@@ -61,6 +61,9 @@ Features
 Building
 --------
 
+A precompiled binary is provided with each release. It is also easy to build
+gjfy yourself, in case you prefer that:
+
 If you do not have a go environment installed already, install it from your
 linux distribution repository (e. g. `apt-get install golang-go`) or download
 it from the [go home page](https://golang.org/dl/).
