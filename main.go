@@ -149,6 +149,7 @@ func main() {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
+			log.Printf("entry not found: %s", id)
 			if jerr := json.NewEncoder(w).Encode(jsonError{"not found"}); jerr != nil {
 				panic(jerr)
 			}
@@ -198,6 +199,7 @@ func main() {
 		id := r.URL.Query().Get("id")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
+			log.Printf("entry not found: %s", id)
 			tViewErr.ExecuteTemplate(w, "master", nil)
 		} else {
 			store.Click(id, r)
