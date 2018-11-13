@@ -59,6 +59,10 @@ type viewInfoEntry struct {
 	UserMessageView string
 }
 
+type jsonError struct {
+	Error string `json:"error"`
+}
+
 func getRealIP(r *http.Request) string {
 	xFF := r.Header.Get("X-Forwarded-For")
 	xRI := r.Header.Get("X-Real-IP")
@@ -145,7 +149,9 @@ func main() {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if entry, ok := store.GetEntryInfo(id); !ok {
 			w.WriteHeader(http.StatusNotFound)
-			fmt.Fprintln(w, "{}")
+			if jerr := json.NewEncoder(w).Encode(jsonError{"not found"}); jerr != nil {
+				panic(jerr)
+			}
 		} else {
 			store.Click(id, r)
 			w.WriteHeader(http.StatusOK)
@@ -167,12 +173,16 @@ func main() {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.Unmarshal(body, &entry); err != nil {
 			w.WriteHeader(422) // unprocessable entity
-			if err := json.NewEncoder(w).Encode(err); err != nil {
-				panic(err)
+			log.Printf("error processing json: %s", err)
+			if jerr := json.NewEncoder(w).Encode(jsonError{err.Error()}); jerr != nil {
+				panic(jerr)
 			}
 		} else if !auth.isAuthorized(&entry) {
 			w.WriteHeader(http.StatusUnauthorized)
-			fmt.Fprintln(w, `{"error":"unauthorized"}`)
+			log.Printf("unauthorized try to make new entry")
+			if jerr := json.NewEncoder(w).Encode(jsonError{"unauthorized"}); jerr != nil {
+				panic(jerr)
+			}
 		} else {
 			id := store.AddEntry(entry, "")
 			newEntry, _ := store.GetEntryInfoHidden(id)
