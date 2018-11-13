@@ -170,8 +170,7 @@ func main() {
 			if err := json.NewEncoder(w).Encode(err); err != nil {
 				panic(err)
 			}
-		}
-		if !auth.isAuthorized(&entry) {
+		} else if !auth.isAuthorized(&entry) {
 			w.WriteHeader(http.StatusUnauthorized)
 			fmt.Fprintln(w, `{"error":"unauthorized"}`)
 		} else {
