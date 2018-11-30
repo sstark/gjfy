@@ -143,7 +143,7 @@ reloaded this way.
 Authentication
 --------------
 
-gjfy has a very simply authentication model. Requests that add tokens are
+gjfy has a very simple authentication model. Requests that add tokens are
 required to carry an *auth_token* in their json data. This *auth_token* is
 looked up in the file `auth.db` and the corresponding email address used for
 further processing and notification. If gjfy does not find the provided
