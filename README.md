@@ -171,7 +171,7 @@ Usage
 -----
 
 Currently the only way to create new secrets is by using the json API. An
-example client (gjfy-post) is included. Basically a request looks like this:
+example client (gjfy-post) is included. A basic request looks like this:
 
     {"auth_token":"g4uhg3iu4h5i3u4","secret":"someSecret"}
 
