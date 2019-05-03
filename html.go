@@ -35,6 +35,7 @@ const (
 		As a user you normally should not need to visit this index page.
 	</p>
 	<ul>
+		<li>Secret<form method="POST" action="/api/v1/create"><input name="secret" placeholder="Enter secret to share" /><button>Submit</button></form></li>
 		<li><a href="https://github.com/sstark/gjfy">
 			<img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"> Homepage</a>
 		<li><a href="gjfy-post">Download command line client</a>
