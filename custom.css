@@ -1,29 +1,31 @@
 html {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	color: #333333;
-	-webkit-text-size-adjust:100%;
-	-ms-text-size-adjust:100%;
+	-webkit-text-size-adjust: 100%;
+	-ms-text-size-adjust: 100%;
 }
-body{
-	margin:0
+body {
+	margin: 0;
 }
 
-a, a:active, a:visited {
+a,
+a:active,
+a:visited {
 	color: #999;
 	text-decoration: none;
 }
 a:hover {
-	color: #549AA5;
+	color: #549aa5;
 	text-decoration: none;
 }
 
 .gjfy-container {
-    width: auto;
-    max-width: 700px;
-    padding: 0 15px;
-    margin-right: auto;
-    margin-left: auto;
-    text-align: center;
+	width: auto;
+	max-width: 700px;
+	padding: 0 15px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
 }
 
 .gjfy-logo {
@@ -41,37 +43,46 @@ a:hover {
 }
 
 .lead {
-    font-size: 21px;
-    margin-bottom: 40px;
-    font-weight: 300;
-    line-height: 1.4;
+	font-size: 21px;
+	margin-bottom: 40px;
+	font-weight: 300;
+	line-height: 1.4;
 }
 
 div#main ul {
-    list-style: none;
-    font-size: 21px;
-    margin-bottom: 40px;
-    font-weight: 300;
-    line-height: 1.4;
+	list-style: none;
+	font-size: 21px;
+	margin-bottom: 40px;
+	font-weight: 300;
+	line-height: 1.4;
 }
 
 .gjfy-form-control {
 	font-family: inherit;
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    color: #999 !important;
-    text-align: center;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    -webkit-transition: border-color ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s;
-    transition: border-color ease-in-out .15s;
-    margin-bottom: 60px;
+	display: block;
+	width: 100%;
+	height: 34px;
+	padding: 6px 12px;
+	font-size: 14px;
+	color: #999 !important;
+	text-align: center;
+	line-height: 1.42857143;
+	color: #555;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	-webkit-transition: border-color ease-in-out 0.15s;
+	-o-transition: border-color ease-in-out 0.15s;
+	transition: border-color ease-in-out 0.15s;
+	margin-bottom: 60px;
+}
+
+.create-secret-form-control {
+	border-radius: 3px;
+	padding: 5px;
+	background-color: #fff;
+	color: #999;
+	background-image: none;
+	border: 1px solid #ccc;
 }

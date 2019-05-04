@@ -23,7 +23,7 @@ const (
 	listenDefault         = ":9154"
 	uApiGet               = "/api/v1/get/"
 	uApiNew               = "/api/v1/new"
-	uApiCreate            = "/api/v1/create"
+	uApiCreate            = "/create"
 	uGet                  = "/g"
 	uInfo                 = "/i"
 	uClientShell          = "/gjfy-post"
@@ -150,15 +150,19 @@ func main() {
 		}
 		tIndex.ExecuteTemplate(w, "master", &Data{AllowAnonymous: fAllowAnonymous})
 	})
-	http.HandleFunc(uApiCreate, func(w http.ResponseWriter, r *http.Request) {
-		err := r.ParseForm()
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-		entry := store.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
-		w.Write([]byte(fmt.Sprintf("%s/g?id=%s", getURLBase(), entry)))
-	})
+
+	if fAllowAnonymous {
+		http.HandleFunc(uApiCreate, func(w http.ResponseWriter, r *http.Request) {
+			err := r.ParseForm()
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
+			entry := store.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
+			w.Write([]byte(fmt.Sprintf("%s/g?id=%s", getURLBase(), entry)))
+		})
+	}
+
 	http.HandleFunc(uApiGet, func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Path[len(uApiGet):]
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
