@@ -159,7 +159,7 @@ func main() {
 				return
 			}
 			entry := store.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
-			w.Write([]byte(fmt.Sprintf("%s/g?id=%s", getURLBase(), entry)))
+			w.Write([]byte(fmt.Sprintf("%s%s?id=%s", getURLBase(), uGet, entry)))
 		})
 	}
 
