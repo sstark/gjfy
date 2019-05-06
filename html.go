@@ -35,6 +35,8 @@ const (
 		As a user you normally should not need to visit this index page.
 	</p>
 	<ul>
+		{{if .AllowAnonymous}}<p>Create a secret below:</p>
+		<div id="create-secret-container"><form method="POST" action="/create"><input name="secret" class="create-secret-form-control" placeholder="Enter secret to share" /><button class="create-secret-form-control">Submit</button></form></div>{{end}}
 		<li><a href="https://github.com/sstark/gjfy">
 			<img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"> Homepage</a>
 		<li><a href="gjfy-post">Download command line client</a>
