@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/bouk/monkey"
+	"bou.ke/monkey"
 	"net/http/httptest"
 	"reflect"
 	"testing"
