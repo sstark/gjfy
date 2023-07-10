@@ -40,7 +40,7 @@ const (
 	TLSDefault            = false
 	notifyDefault         = false
 	allowAnonymousDefault = false
-	logTerseDefault	      = false
+	logTerseDefault       = false
 )
 
 var (
@@ -53,7 +53,7 @@ var (
 	fTLS            bool
 	fNotify         bool
 	fAllowAnonymous bool
-	fLogTerse		bool
+	fLogTerse       bool
 	scheme          = "http://"
 	configDir       = "/etc/" + myName
 	userMessageView string
