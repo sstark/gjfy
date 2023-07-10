@@ -223,6 +223,7 @@ func main() {
 		} else {
 			store.Click(id, r)
 			w.WriteHeader(http.StatusOK)
+			log.Printf("entry accessed: %s %d/%d", id, entry.MaxClicks-entry.Clicks, entry.MaxClicks)
 			viewEntry := viewInfoEntry{entry, userMessageView}
 			tView.ExecuteTemplate(w, "master", viewEntry)
 		}
