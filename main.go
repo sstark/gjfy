@@ -40,6 +40,7 @@ const (
 	TLSDefault            = false
 	notifyDefault         = false
 	allowAnonymousDefault = false
+	logTerseDefault	      = false
 )
 
 var (
@@ -52,6 +53,7 @@ var (
 	fTLS            bool
 	fNotify         bool
 	fAllowAnonymous bool
+	fLogTerse		bool
 	scheme          = "http://"
 	configDir       = "/etc/" + myName
 	userMessageView string
@@ -80,7 +82,9 @@ func getRealIP(r *http.Request) string {
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		realRemoteAddr := getRealIP(r)
-		log.Printf("%s (%s) \"%s %s %s\" \"%s\"", r.RemoteAddr, realRemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+		if !fLogTerse {
+			log.Printf("%s (%s) \"%s %s %s\" \"%s\"", r.RemoteAddr, realRemoteAddr, r.Method, r.URL.Path, r.Proto, r.Header.Get("User-Agent"))
+		}
 		handler.ServeHTTP(w, r)
 	})
 }
@@ -111,6 +115,7 @@ func main() {
 	flag.BoolVar(&fTLS, "tls", TLSDefault, "use TLS connection")
 	flag.BoolVar(&fNotify, "notify", notifyDefault, "send email notification when one time link is used")
 	flag.BoolVar(&fAllowAnonymous, "allow-anonymous", allowAnonymousDefault, "allow secrets by anonymous users")
+	flag.BoolVar(&fLogTerse, "logterse", logTerseDefault, "do not log HTTP requests")
 	flag.Parse()
 
 	log.Printf("gjfy version %s\n", version)

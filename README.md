@@ -113,6 +113,12 @@ The scheme will automatically switch to https unless you set urlbase. Before
 you can turn on tls you must create a certificate file called `gjfy.crt` and a
 key file called `gjfy.key`.
 
+To turn down a bit on logging you can use the `-logterse` flag:
+
+    gjfy -logterse
+
+This will not log any HTTP requests, just access to secrets.
+
 Use `gjfy -help` for help.
 
 Options
