@@ -1,2 +1,18 @@
 - header.html
 - better error handling in url handlers
+
+# Rework 2.0
+
+- Use spf13/cobra for command line flags.
+- Single binary with multiple functionality:
+    * `gjfy server` the current "classic" mode.
+    * `gjfy token <add|delete>` manage user tokens.
+    * `gjfy secret <add>` add secrets. Replaces the shell script.
+    * `gjfy db <export|import>` dumps or imports the current secret db from memory.
+        + Idea is to be able to restart gjfy without losing secrets.
+- Consider dropping TLS support.
+    * This has never been a good feature, and this should be really done by a
+      reverse proxy with proper certificate management.
+    * Downside is that for api actions like `gjfy secret` we lose TLS or have
+      to setup a reverse proxy even for testing.
+- Use `go embed` for logo and html template.
