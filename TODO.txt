@@ -17,5 +17,4 @@
       to setup a reverse proxy even for testing.
 - Use `go embed` for logo and html template.
 - Split project in packages
-- Fix deprecated io/ioutil usage
 - Improve test coverage

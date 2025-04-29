@@ -1,7 +1,7 @@
 package fileio
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -9,17 +9,17 @@ import (
 )
 
 func TestTryReadFile(t *testing.T) {
-	tmpdir, _ := ioutil.TempDir("", "gjfy_test")
+	tmpdir, _ := os.MkdirTemp("", "gjfy_test")
 	defer os.Remove(tmpdir)
 
 	fileName := "gjfy_testfile"
 	testContent := []byte("test")
 	testFileA := path.Join(tmpdir, fileName)
-	ioutil.WriteFile(testFileA, testContent, 0644)
+	os.WriteFile(testFileA, testContent, 0644)
 	defer os.Remove(testFileA)
 
 	configDir = tmpdir
-	log.SetOutput(ioutil.Discard)
+	log.SetOutput(io.Discard)
 
 	// Test file in configDir
 	bytes := TryReadFile(fileName)
@@ -37,7 +37,7 @@ func TestTryReadFile(t *testing.T) {
 	testContentPwd := []byte("testPwd")
 	wd, _ := os.Getwd()
 	testFileB := path.Join(wd, fileName)
-	ioutil.WriteFile(testFileB, testContentPwd, 0644)
+	os.WriteFile(testFileB, testContentPwd, 0644)
 	defer os.Remove(testFileB)
 	bytes = TryReadFile(fileName)
 	if string(bytes) != string(testContentPwd) {

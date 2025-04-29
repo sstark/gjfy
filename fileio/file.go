@@ -1,7 +1,6 @@
 package fileio
 
 import (
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -27,7 +26,7 @@ func FileOrConst(fn string, def string) string {
 // returns an empty byte slice.
 func TryReadFile(fn string) []byte {
 	pn := TryFile(fn)
-	contents, err := ioutil.ReadFile(pn)
+	contents, err := os.ReadFile(pn)
 	if err == nil {
 		return contents
 	}

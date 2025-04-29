@@ -1,7 +1,7 @@
 package misc
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"os/exec"
 )
@@ -26,7 +26,7 @@ func SendMail(to, subject, msg string) {
 	stdin.Write([]byte(msg))
 	stdin.Write([]byte("\n"))
 	stdin.Close()
-	ioutil.ReadAll(stdout)
+	io.ReadAll(stdout)
 	sendmail.Wait()
 	log.Printf("sending notification to %s done.\n", to)
 }

@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -176,7 +175,7 @@ This contains the functionality of previous gjfy releases.`,
 		http.HandleFunc(api.ApiNew, func(w http.ResponseWriter, r *http.Request) {
 			var entry store.StoreEntry
 
-			body, err := ioutil.ReadAll(io.LimitReader(r.Body, maxData))
+			body, err := io.ReadAll(io.LimitReader(r.Body, maxData))
 			if err != nil {
 				panic(err)
 			}
