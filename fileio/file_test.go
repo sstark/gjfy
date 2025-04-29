@@ -1,4 +1,4 @@
-package main
+package fileio
 
 import (
 	"io/ioutil"
@@ -22,13 +22,13 @@ func TestTryReadFile(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
 
 	// Test file in configDir
-	bytes := tryReadFile(fileName)
+	bytes := TryReadFile(fileName)
 	if string(bytes) != string(testContent) {
 		t.Errorf("got %v, wanted %v", bytes, testContent)
 	}
 
 	// Test file does not exist
-	bytes = tryReadFile("doesnotexist")
+	bytes = TryReadFile("doesnotexist")
 	if string(bytes) != "" {
 		t.Errorf("got %v, wanted empty slice", bytes)
 	}
@@ -39,7 +39,7 @@ func TestTryReadFile(t *testing.T) {
 	testFileB := path.Join(wd, fileName)
 	ioutil.WriteFile(testFileB, testContentPwd, 0644)
 	defer os.Remove(testFileB)
-	bytes = tryReadFile(fileName)
+	bytes = TryReadFile(fileName)
 	if string(bytes) != string(testContentPwd) {
 		t.Errorf("got %v, wanted %v", bytes, testContentPwd)
 	}

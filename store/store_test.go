@@ -1,4 +1,4 @@
-package main
+package store
 
 import (
 	"bou.ke/monkey"
@@ -53,7 +53,7 @@ func TestStore_NewEntry(t *testing.T) {
 		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	store := make(secretStore)
+	store := make(SecretStore)
 	for _, p := range StoreEntryTestPairs {
 		outId := store.NewEntry(p.in.secret, p.in.maxClicks, p.in.validFor, p.in.authToken, p.in.id)
 		if outId != p.out.id {
@@ -70,9 +70,9 @@ func TestStore_NewEntry(t *testing.T) {
 }
 
 func TestStore_GetEntryInfo(t *testing.T) {
-	store := make(secretStore)
+	store := make(SecretStore)
 	store.NewEntry("secret", 1, 1, "auth", "testid")
-	out, ok := store.GetEntryInfoHidden("testid")
+	out, ok := store.GetEntryInfoHidden("testid", "http://localhost:")
 	if !ok {
 		t.Errorf("new entry not found under %v", "testid")
 	}
@@ -92,7 +92,7 @@ func TestStore_GetEntryInfo(t *testing.T) {
 
 func TestStore_Click(t *testing.T) {
 	clicks := 2
-	store := make(secretStore)
+	store := make(SecretStore)
 	store.NewEntry("secret", clicks, 1, "auth", "testid")
 	_, ok := store.GetEntry("testid")
 	if !ok {
@@ -100,7 +100,7 @@ func TestStore_Click(t *testing.T) {
 	}
 	req := httptest.NewRequest("GET", "/testid", nil)
 	for i := 0; i < clicks; i++ {
-		store.Click("testid", req)
+		store.Click("testid", req, false)
 	}
 	_, ok = store.GetEntry("testid")
 	if ok {
@@ -109,7 +109,7 @@ func TestStore_Click(t *testing.T) {
 }
 
 func TestStore_Expiry(t *testing.T) {
-	store := make(secretStore)
+	store := make(SecretStore)
 	store.NewEntry("secret", 1, 150, "auth", "testid")
 	_, ok := store.GetEntry("testid")
 	if !ok {

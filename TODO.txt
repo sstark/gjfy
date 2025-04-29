@@ -16,3 +16,6 @@
     * Downside is that for api actions like `gjfy secret` we lose TLS or have
       to setup a reverse proxy even for testing.
 - Use `go embed` for logo and html template.
+- Split project in packages
+- Fix deprecated io/ioutil usage
+- Improve test coverage

@@ -1,12 +1,14 @@
-package main
+package tokendb
 
 import (
 	"encoding/json"
 	"log"
+
+	"github.com/sstark/gjfy/store"
 )
 
 const (
-	authFileName = "auth.db"
+	AuthFileName = "auth.db"
 )
 
 type AuthToken struct {
@@ -16,7 +18,7 @@ type AuthToken struct {
 
 type TokenDB []AuthToken
 
-func makeTokenDB(b []byte) TokenDB {
+func MakeTokenDB(b []byte) TokenDB {
 	var tokens TokenDB
 	err := json.Unmarshal(b, &tokens)
 	if err != nil {
@@ -46,11 +48,11 @@ func (db TokenDB) findToken(token string) (email string) {
 	return
 }
 
-// isAuthorized tries to find the auth token given in entry.
+// IsAuthorized tries to find the auth token given in entry.
 // It will the change the entry parameter by replacing the auth
 // token with the associated email address. This is to have the
 // auth token not end up in the secret database.
-func (db TokenDB) isAuthorized(entry *StoreEntry) bool {
+func (db TokenDB) IsAuthorized(entry *store.StoreEntry) bool {
 	email := db.findToken(entry.AuthToken)
 	if email == "" {
 		return false

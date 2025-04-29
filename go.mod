@@ -4,5 +4,5 @@ go 1.12
 
 require (
 	bou.ke/monkey v1.0.2
-	github.com/spf13/cobra v1.9.1 // indirect
+	github.com/spf13/cobra v1.9.1
 )

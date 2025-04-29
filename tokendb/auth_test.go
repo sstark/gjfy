@@ -1,4 +1,4 @@
-package main
+package tokendb
 
 import (
 	"io/ioutil"
@@ -32,7 +32,7 @@ var tdbTestPairs = []tdbTestPair{
 func TestAuth_makeTokenDB(t *testing.T) {
 	log.SetOutput(ioutil.Discard)
 	for _, pair := range tdbTestPairs {
-		tdb := makeTokenDB(pair.in)
+		tdb := MakeTokenDB(pair.in)
 		if (tdb != nil) != pair.out {
 			t.Errorf("%v should be %v", tdb, pair.out)
 		}

@@ -1,4 +1,4 @@
-package main
+package fileio
 
 import (
 	"io/ioutil"
@@ -7,10 +7,15 @@ import (
 	"path"
 )
 
+var (
+	myName = "gjfy"
+	configDir = "/etc/" + myName
+)
+
 // fileOrConst works like tryReadFile, except it returns a string
 // and, if the file is not accessible, a default string.
-func fileOrConst(fn string, def string) string {
-	pn := tryReadFile(fn)
+func FileOrConst(fn string, def string) string {
+	pn := TryReadFile(fn)
 	if len(pn) > 0 {
 		return string(pn)
 	}
@@ -20,8 +25,8 @@ func fileOrConst(fn string, def string) string {
 // tryReadFile takes a _filename_ and uses tryFile() to find the file and
 // eventually return its contents. If the files was not found or is unreadable
 // returns an empty byte slice.
-func tryReadFile(fn string) []byte {
-	pn := tryFile(fn)
+func TryReadFile(fn string) []byte {
+	pn := TryFile(fn)
 	contents, err := ioutil.ReadFile(pn)
 	if err == nil {
 		return contents
@@ -32,7 +37,7 @@ func tryReadFile(fn string) []byte {
 // tryFile takes a _filename_ as an argument and tries several directories to
 // find this file. In the case of success it returns the full path name,
 // otherwise it returns the empty string.
-func tryFile(fn string) string {
+func TryFile(fn string) string {
 	var dirs []string
 	cwd, err := os.Getwd()
 	if err == nil {

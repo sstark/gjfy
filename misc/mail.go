@@ -1,4 +1,4 @@
-package main
+package misc
 
 import (
 	"io/ioutil"
@@ -7,9 +7,7 @@ import (
 )
 
 func NotifyMail(to, msg string) {
-	if fNotify {
-		go SendMail(to, "GJFY notice", msg)
-	}
+	go SendMail(to, "GJFY notice", msg)
 }
 
 func SendMail(to, subject, msg string) {
