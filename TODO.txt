@@ -3,9 +3,9 @@
 
 # Rework 2.0
 
-- Use spf13/cobra for command line flags.
+- Use spf13/cobra for command line flags. ✅
 - Single binary with multiple functionality:
-    * `gjfy server` the current "classic" mode.
+    * `gjfy server` the current "classic" mode. ✅
     * `gjfy token <add|delete>` manage user tokens.
     * `gjfy secret <add>` add secrets. Replaces the shell script.
     * `gjfy db <export|import>` dumps or imports the current secret db from memory.
@@ -16,5 +16,6 @@
     * Downside is that for api actions like `gjfy secret` we lose TLS or have
       to setup a reverse proxy even for testing.
 - Use `go embed` for logo and html template.
-- Split project in packages
+- Split project in packages ✅
+- Fix deprecated io/ioutil usage ✅
 - Improve test coverage
