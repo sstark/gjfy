@@ -10,7 +10,8 @@ import (
 var rootCmd = &cobra.Command{
 	Use:   "gjfy",
 	Short: "gjfy one-time links",
-	Long: "gjfy is a web service for creating and providing one-time clickable links",
+	Long:  `
+gjfy is a web service and tool for creating and providing one-time clickable links`,
 }
 
 func Execute() {

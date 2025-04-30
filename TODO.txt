@@ -19,3 +19,4 @@
 - Split project in packages ✅
 - Fix deprecated io/ioutil usage ✅
 - Improve test coverage
+- Use a more standard mechanism for sending token
