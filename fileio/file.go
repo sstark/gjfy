@@ -7,9 +7,21 @@ import (
 )
 
 var (
-	myName = "gjfy"
+	myName    = "gjfy"
 	configDir = "/etc/" + myName
 )
+
+// fileOrFunc works like tryReadFile, except it will run a callback
+// function and return its result instead of an empty byte slice.
+// if the file is not accessible.
+// The callback must take a string argument (the filename).
+func FileOrFunc(fn string, def func(string) []byte) []byte {
+	pn := TryReadFile(fn)
+	if len(pn) > 0 {
+		return pn
+	}
+	return def(fn)
+}
 
 // fileOrConst works like tryReadFile, except it returns a string
 // and, if the file is not accessible, a default string.

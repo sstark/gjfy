@@ -80,8 +80,14 @@ func updateFiles() {
 	if auth == nil {
 		log.Println("auth db could not be loaded, please fix and reload")
 	}
-	css = fileio.TryReadFile(fileio.CssFileName)
-	logo = fileio.TryReadFile(fileio.LogoFileName)
+	css = fileio.FileOrFunc(fileio.CssFileName, func(fn string) []byte {
+		// default to embedded css if file not found
+		return fileio.CustomCss
+	})
+	logo = fileio.FileOrFunc(fileio.LogoFileName, func(fn string) []byte {
+		// default to embedded logo if file not found
+		return fileio.GjfyLogo
+	})
 	userMessageView = fileio.FileOrConst(fileio.UserMessageViewFilename, fileio.UserMessageViewDefaultText)
 	updated = time.Now()
 }

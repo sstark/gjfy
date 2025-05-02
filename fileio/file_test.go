@@ -5,8 +5,21 @@ import (
 	"log"
 	"os"
 	"path"
+	"reflect"
 	"testing"
 )
+
+func TestFileOrFunc(t *testing.T) {
+	log.SetOutput(io.Discard)
+	byteval := []byte{0x1, 0x2, 0x3, 0x4}
+	fn := "/this/file/does/not/exist/anywhere.xxxxx"
+	bytes_returned := FileOrFunc(fn, func(fn string) []byte {
+		return byteval
+	})
+	if !reflect.DeepEqual(bytes_returned, byteval) {
+		t.Errorf("FileOrFunc did not fall back properly to the output of the callback function. Got: %v, Expected: %v", bytes_returned, byteval)
+	}
+}
 
 func TestTryReadFile(t *testing.T) {
 	tmpdir, _ := os.MkdirTemp("", "gjfy_test")

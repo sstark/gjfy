@@ -1,4 +1,4 @@
-![gjfy](https://raw.githubusercontent.com/sstark/gjfy/master/logo.png)
+![gjfy](https://raw.githubusercontent.com/sstark/gjfy/master/fileio/logo.png)
 
 one time link server
 ====================

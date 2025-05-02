@@ -9,6 +9,10 @@ var (
 	Favicon []byte
 	//go:embed gjfy-logo-small.png
 	GjfyLogoSmall []byte
+	//go:embed logo.png
+	GjfyLogo []byte
+	//go:embed custom.css
+	CustomCss []byte
 )
 
 const (
