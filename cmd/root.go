@@ -7,9 +7,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	Version string
+)
+
 var rootCmd = &cobra.Command{
 	Use:   "gjfy",
 	Short: "gjfy one-time links",
+	Version: Version,
 	Long:  `
 gjfy is a web service and tool for creating and providing one-time clickable links`,
 }

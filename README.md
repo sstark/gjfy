@@ -68,10 +68,8 @@ If you do not have a go environment installed already, install it from your
 linux distribution repository (e. g. `apt-get install golang-go`) or download
 it from the [go home page](https://golang.org/dl/).
 
-Download the code and run "go build", it will create a single binary file for
+Download the code and run `make`, it will create a single binary file for
 easy deployment.
-
-`go get github.com/sstark/gjfy` will also work.
 
 Installation
 ------------
@@ -86,8 +84,9 @@ Create a directory, e. g. `/usr/local/gjfy`. Then copy the following files to it
 For integration into the various system management environments like upstart or
 systemd, check the init/ subdirectory for examples.
 
-<sup>1</sup>If you installed using "go get" the binary will be located at
-`$GOPATH/bin/gjfy`, while the rest of the files will be under `$GOPATH/src/github.com/sstark/gjfy`
+<sup>1</sup>If you installed a version <=1.2 using `go get`, the binary will be
+located at `$GOPATH/bin/gjfy`, while the rest of the files will be under
+`$GOPATH/src/github.com/sstark/gjfy`
 
 Running
 -------

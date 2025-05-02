@@ -105,7 +105,7 @@ users to retrieve secrets.
 (This is the functionality of gjfy releases <=1.2, which has been moved
 into the server subcommand)`,
 	Run: func(cmd *cobra.Command, args []string) {
-		log.Printf("gjfy version %s\n", misc.Version)
+		log.Printf("gjfy version %s\n", Version)
 
 		memstore := make(store.SecretStore)
 		memstore.NewEntry("secret", 100, 0, "test@example.org", "test")
