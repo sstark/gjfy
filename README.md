@@ -3,6 +3,21 @@
 one time link server
 ====================
 
+> [!WARNING]
+> Changes in development (master) version:
+
+- Next release 2.0 will be reworked in several ways. Main visible change is
+that more functionality will be added to the gjfy binary itself, e. g. posting
+secrets. Other additions are planned.
+- A recent go release is needed to build.
+- Existing functionality has been moved into `server` subcommand. Just use
+`gjfy server` wherever you called just `gjfy` before
+- Flags have been changed to be posix compatible (-> `--` instead of `-`). Just
+add another `-` in front of every option. You may now use short options too,
+see help.
+- You should be able to build and use the master branch if you follow above
+notes, but it has not been tested a lot yet.
+
 What does it do?
 ----------------
 
@@ -55,7 +70,6 @@ Features
   - Simple html user interface
   - The CSS styling, logo and user message can be customised
   - Simple token based authentication
-  - Supports IPv6, HTTP2, TLS
   - Email notification
 
 Building
@@ -78,8 +92,6 @@ Create a directory, e. g. `/usr/local/gjfy`. Then copy the following files to it
 
   - gjfy (the binary you just built)<sup>1</sup>
   - auth.db
-  - logo.png
-  - custom.css
 
 For integration into the various system management environments like upstart or
 systemd, check the init/ subdirectory for examples.
@@ -91,28 +103,41 @@ located at `$GOPATH/bin/gjfy`, while the rest of the files will be under
 Running
 -------
 
+### Subcommand `server`
+
 Choose the IP address and port gjfy listens on with the `-listen` parameter.
 
 Examples:
 
-    gjfy -listen '0.0.0.0:1234'    # listen on all IPv4 addresses
-    gjfy -listen '[::1]:4123'      # listen on localhost, IPv6 only
-    gjfy -listen ':6234'           # listen on all addresses, IPv4 and IPv6
+    gjfy server --listen '0.0.0.0:1234'    # listen on all IPv4 addresses
+    gjfy server --listen '[::1]:4123'      # listen on localhost, IPv6 only
+    gjfy server --listen ':6234'           # listen on all addresses, IPv4 and IPv6
 
 To tell gjfy its name as seen by users of the service, use the `-urlbase` parameter like so:
 
-    gjfy -urlbase 'https://gjfy.example.org'
-    gjfy -urlbase 'https://gjfy.example.org:4123'
+    gjfy server --urlbase 'https://gjfy.example.org'
+    gjfy server --urlbase 'https://gjfy.example.org:4123'
 
 To use TLS security add the `-tls` switch:
 
-    gjfy -tls
+    gjfy server --tls
 
 The scheme will automatically switch to https unless you set urlbase. Before
 you can turn on tls you must create a certificate file called `gjfy.crt` and a
 key file called `gjfy.key`.
 
-Use `gjfy -help` for help.
+Use `gjfy server -help` for help.
+
+### Subcommand `completion`
+
+Use the completion subcommand to generate completion code for one if these shells: bash, fish, powershell, zsh.
+
+E. g. for bash or zsh you can use it by putting something like this in your
+shell startup:
+
+```sh
+source <(gjfy completion zsh)
+```
 
 Options
 -------
