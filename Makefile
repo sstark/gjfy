@@ -15,4 +15,7 @@ clean:
 	go clean
 
 test:
+	go test ./...
+
+test-verbose:
 	go test -v ./...
