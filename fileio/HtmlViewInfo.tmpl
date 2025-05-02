@@ -1,0 +1,23 @@
+{{define "info"}}
+{{template "header" " - View Metadata"}}
+<h2 id="mainheading">Metadata for {{.Id}}</h2>
+<div id="main">
+<table id="info">
+<tr>
+	<th>Id</th>
+	<th>MaxClicks</th>
+	<th>Clicks</th>
+	<th>DateAdded</th>
+	<th>AuthToken</th>
+</tr>
+<tr>
+	<td><a href="{{.Url}}">{{.Id}}</a></td>
+	<td>{{.MaxClicks}}</td>
+	<td>{{.Clicks}}</td>
+	<td>{{.DateAdded}}</td>
+	<td>{{.AuthToken}}</td>
+</tr>
+</table>
+</div>
+{{template "footer"}}
+{{end}}

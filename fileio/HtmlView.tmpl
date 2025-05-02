@@ -1,0 +1,11 @@
+{{define "view"}}
+{{template "header" " - View Secret"}}
+<div id="main">
+<p class="lead">
+{{.UserMessageView}}
+</p>
+<p>The secret contained in this link is as follows:</p>
+<input readonly autofocus type="text" class="gjfy-form-control" value="{{.Secret}}">
+</div>
+{{template "footer" .}}
+{{end}}

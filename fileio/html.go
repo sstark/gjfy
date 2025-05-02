@@ -1,50 +1,13 @@
 package fileio
 
+import "embed"
+
+var (
+	//go:embed *.tmpl
+	HtmlTemplates embed.FS
+)
+
 const (
-	HtmlMaster = `
-	{{define "master"}}
-	<!DOCTYPE html>
-	<html>
-	<head>
-		<title>gjfy{{block "title" .}}{{end}}</title>
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-		<link rel="stylesheet" type="text/css" href="custom.css">
-	</head>
-	<body>
-	<div class="gjfy-container">
-    <img src="logo.png" alt="logo" class="gjfy-logo">
-	<div id="content">
-	{{block "content" .}}{{end}}
-	</div>
-	{{block "footer" .}}
-	{{end}}
-	</div>
-	</body>
-	</html>
-	{{end}}
-	`
-	HtmlIndex = `
-	{{define "title"}} - one time links{{end}}
-	{{define "content"}}
-	<div id="main">
-	<h1>gjfy - one time links</h1>
-	<p class="lead">
-		Create links that automatically disappear once clicked. On first click
-		it will show a "secret", for instance a password that somebody wants to
-		send to someone.</br>
-		As a user you normally should not need to visit this index page.
-	</p>
-	<ul>
-		{{if .AllowAnonymous}}<p>Create a secret below:</p>
-		<div id="create-secret-container"><form method="POST" action="/create" autocomplete="off"><input name="secret" class="create-secret-form-control" placeholder="Enter secret to share" autofocus required/><button class="create-secret-form-control">Submit</button></form></div>{{end}}
-		<li><a href="https://github.com/sstark/gjfy">
-			<img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"> Homepage</a>
-		<li><a href="gjfy-post">Download command line client</a>
-	</ul>
-	</p>
-	</div>
-	{{end}}
-	`
 	UserMessageViewDefaultText = `
 		The link you invoked contains a secret (a password for example)
 		somebody wants to share with you. It will be valid only for a short
@@ -52,64 +15,6 @@ const (
 		you memorise the secret or write it down in an appropriate way.
 		`
 	UserMessageViewFilename = "userMessageView.txt"
-	HtmlView                = `
-	{{define "title"}} - View Secret{{end}}
-	{{define "content"}}
-	<div id="main">
-	<p class="lead">
-	{{.UserMessageView}}
-	</p>
-	<p>The secret contained in this link is as follows:</p>
-	<input readonly autofocus type="text" class="gjfy-form-control" value="{{.Secret}}">
-	</div>
-	{{end}}
-	{{block "footer" .}}
-		<div id="footer">
-		<p>This <a href="https://github.com/sstark/gjfy"><img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a> secret was created by
-			<a href="mailto:{{.AuthToken}}">{{.AuthToken}} </a>
-		</p>
-		</div>
-	{{end}}
-	`
-	HtmlViewInfo = `
-	{{define "title"}} - View Info{{end}}
-	{{define "content"}}
-	<h2 id="mainheading">Metadata for {{.Id}}</h2>
-	<div id="main">
-	<table id="info">
-	<tr>
-		<th>Id</th>
-		<th>MaxClicks</th>
-		<th>Clicks</th>
-		<th>DateAdded</th>
-		<th>AuthToken</th>
-	</tr>
-	<tr>
-		<td><a href="{{.Url}}">{{.Id}}</a></td>
-		<td>{{.MaxClicks}}</td>
-		<td>{{.Clicks}}</td>
-		<td>{{.DateAdded}}</td>
-		<td>{{.AuthToken}}</td>
-	</tr>
-	</table>
-	</div>
-	{{end}}
-	`
-	HtmlViewErr = `
-	{{define "title"}} - Error{{end}}
-	{{define "content"}}
-	<h2 id="errorheading">Not available</h2>
-	<div id="main">
-	<p id="errormessage">This ID is not valid anymore. Please request another one from the person who sent you this link.</p>
-	</div>
-	{{end}}
-	{{define "footer"}}
-		<div id="footer">
-		<p><a href="https://github.com/sstark/gjfy"><img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"></a>
-		</p>
-		</div>
-	{{end}}
-	`
 	CssFileName  = "custom.css"
 	LogoFileName = "logo.png"
 )

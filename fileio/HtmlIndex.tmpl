@@ -1,0 +1,22 @@
+
+{{define "index"}}
+{{template "header" " - one time links"}}
+<div id="main">
+<h1>gjfy - one time links</h1>
+<p class="lead">
+	Create links that automatically disappear once clicked. On first click
+	it will show a "secret", for instance a password that somebody wants to
+	send to someone.</br>
+	As a user you normally should not need to visit this index page.
+</p>
+<ul>
+	{{if .AllowAnonymous}}<p>Create a secret below:</p>
+	<div id="create-secret-container"><form method="POST" action="/create" autocomplete="off"><input name="secret" class="create-secret-form-control" placeholder="Enter secret to share" autofocus required/><button class="create-secret-form-control">Submit</button></form></div>{{end}}
+	<li><a href="https://github.com/sstark/gjfy">
+		<img src="gjfy-logo-small.png" alt="gjfy-logo" class="gjfy-footer-logo-small"> Homepage</a>
+	<li><a href="gjfy-post">Download command line client</a>
+</ul>
+</p>
+</div>
+{{template "footer"}}
+{{end}}

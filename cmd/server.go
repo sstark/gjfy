@@ -123,24 +123,15 @@ into the server subcommand)`,
 			}
 		}()
 
-		tIndex := template.New("index")
-		tIndex.Parse(fileio.HtmlMaster)
-		tIndex.Parse(fileio.HtmlIndex)
-		tView := template.New("view")
-		tView.Parse(fileio.HtmlMaster)
-		tView.Parse(fileio.HtmlView)
-		tViewErr := template.New("viewErr")
-		tViewErr.Parse(fileio.HtmlMaster)
-		tViewErr.Parse(fileio.HtmlViewErr)
-		tViewInfo := template.New("viewInfo")
-		tViewInfo.Parse(fileio.HtmlMaster)
-		tViewInfo.Parse(fileio.HtmlViewInfo)
+		htmlTemplates, _ := template.ParseFS(fileio.HtmlTemplates, "*.tmpl")
+
 		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
 			type Data struct {
 				AllowAnonymous bool
 			}
-			tIndex.ExecuteTemplate(w, "master", &Data{AllowAnonymous: fAllowAnonymous})
+			htmlTemplates.ExecuteTemplate(w, "index", &Data{AllowAnonymous: fAllowAnonymous,
+			})
 		})
 
 		if fAllowAnonymous {
@@ -212,12 +203,12 @@ into the server subcommand)`,
 			if entry, ok := memstore.GetEntryInfo(id, getURLBase()); !ok {
 				w.WriteHeader(http.StatusNotFound)
 				log.Printf("entry not found: %s", id)
-				tViewErr.ExecuteTemplate(w, "master", nil)
+				htmlTemplates.ExecuteTemplate(w, "error", nil)
 			} else {
 				memstore.Click(id, r, fNotify)
 				w.WriteHeader(http.StatusOK)
 				viewEntry := viewInfoEntry{entry, userMessageView}
-				tView.ExecuteTemplate(w, "master", viewEntry)
+				htmlTemplates.ExecuteTemplate(w, "view", viewEntry)
 			}
 		})
 
@@ -225,10 +216,10 @@ into the server subcommand)`,
 			id := r.URL.Query().Get("id")
 			if entry, ok := memstore.GetEntryInfo(id, getURLBase()); !ok {
 				w.WriteHeader(http.StatusNotFound)
-				tViewErr.ExecuteTemplate(w, "master", nil)
+				htmlTemplates.ExecuteTemplate(w, "error", nil)
 			} else {
 				w.WriteHeader(http.StatusOK)
-				tViewInfo.ExecuteTemplate(w, "master", entry)
+				htmlTemplates.ExecuteTemplate(w, "info", entry)
 			}
 		})
 
