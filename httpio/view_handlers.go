@@ -68,6 +68,6 @@ func HandleCreate(memstore store.SecretStore, urlbase string) http.Handler {
 			return
 		}
 		entry := memstore.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
-		w.Write([]byte(fmt.Sprintf("%s%s?id=%s", urlbase, Get, entry)))
+		w.Write(fmt.Appendf([]byte{}, "%s%s?id=%s", urlbase, Get, entry))
 	})
 }
