@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/sstark/gjfy/misc"
-	"github.com/sstark/gjfy/api"
 )
 
 const (
@@ -79,18 +78,18 @@ func (st SecretStore) GetEntry(id string) (se StoreEntry, ok bool) {
 }
 
 // GetEntryInfo wraps GetEntry and adds some computed fields.
-func (st SecretStore) GetEntryInfo(id, urlbase string) (si StoreEntryInfo, ok bool) {
+func (st SecretStore) GetEntryInfo(id, urlbase, urlget, urlapiget string) (si StoreEntryInfo, ok bool) {
 	entry, ok := st.GetEntry(id)
-	pathQuery := api.Get + "?id=" + id
+	pathQuery := urlget + "?id=" + id
 	url := urlbase + pathQuery
-	apiurl := urlbase + api.ApiGet + id
+	apiurl := urlbase + urlapiget + id
 	return StoreEntryInfo{entry, id, pathQuery, url, apiurl}, ok
 }
 
 // GetEntryInfo wraps GetEntry and adds some computed fields. In addition it
 // hides the "secret" value.
-func (st SecretStore) GetEntryInfoHidden(id, urlbase string) (si StoreEntryInfo, ok bool) {
-	si, ok = st.GetEntryInfo(id, urlbase)
+func (st SecretStore) GetEntryInfoHidden(id, urlbase, urlget, urlapiget string) (si StoreEntryInfo, ok bool) {
+	si, ok = st.GetEntryInfo(id, urlbase, urlget, urlapiget)
 	si.Secret = hiddenString
 	return
 }

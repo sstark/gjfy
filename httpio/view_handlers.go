@@ -18,7 +18,7 @@ type viewInfoEntry struct {
 var htmlTemplates *template.Template
 
 func init() {
-	htmlTemplates, _ = template.ParseFS(fileio.HtmlTemplates, "*.tmpl")
+	htmlTemplates = template.Must(template.ParseFS(fileio.HtmlTemplates, "*.tmpl"))
 }
 
 func HandleIndex(fAllowAnonymous bool) http.Handler {
@@ -34,7 +34,7 @@ func HandleIndex(fAllowAnonymous bool) http.Handler {
 func HandleGet(memstore store.SecretStore, urlbase string, fNotify bool, userMessageView string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")
-		if entry, ok := memstore.GetEntryInfo(id, urlbase); !ok {
+		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {
 			w.WriteHeader(http.StatusNotFound)
 			log.Printf("entry not found: %s", id)
 			htmlTemplates.ExecuteTemplate(w, "error", nil)
@@ -50,7 +50,7 @@ func HandleGet(memstore store.SecretStore, urlbase string, fNotify bool, userMes
 func HandleInfo(memstore store.SecretStore, urlbase string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")
-		if entry, ok := memstore.GetEntryInfo(id, urlbase); !ok {
+		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {
 			w.WriteHeader(http.StatusNotFound)
 			htmlTemplates.ExecuteTemplate(w, "error", nil)
 		} else {
@@ -60,7 +60,7 @@ func HandleInfo(memstore store.SecretStore, urlbase string) http.Handler {
 	})
 }
 
-func HandleCreate(memstore store.SecretStore, urlbase string, urlget string) http.Handler {
+func HandleCreate(memstore store.SecretStore, urlbase string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		err := r.ParseForm()
 		if err != nil {
@@ -68,6 +68,6 @@ func HandleCreate(memstore store.SecretStore, urlbase string, urlget string) htt
 			return
 		}
 		entry := memstore.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
-		w.Write([]byte(fmt.Sprintf("%s%s?id=%s", urlbase, urlget, entry)))
+		w.Write([]byte(fmt.Sprintf("%s%s?id=%s", urlbase, Get, entry)))
 	})
 }

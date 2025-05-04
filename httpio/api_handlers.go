@@ -18,11 +18,11 @@ type jsonError struct {
 	Error string `json:"error"`
 }
 
-func HandleApiGet(memstore store.SecretStore, urlbase string, fNotify bool, urlapiget string) http.Handler {
+func HandleApiGet(memstore store.SecretStore, urlbase string, fNotify bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.URL.Path[len(urlapiget):]
+		id := r.URL.Path[len(ApiGet):]
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		if entry, ok := memstore.GetEntryInfo(id, urlbase); !ok {
+		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {
 			w.WriteHeader(http.StatusNotFound)
 			log.Printf("entry not found: %s", id)
 			if jerr := json.NewEncoder(w).Encode(jsonError{"not found"}); jerr != nil {
@@ -64,7 +64,7 @@ func HandleApiNew(memstore store.SecretStore, urlbase string, auth tokendb.Token
 			}
 		} else {
 			id := memstore.AddEntry(entry, "")
-			newEntry, _ := memstore.GetEntryInfoHidden(id, urlbase)
+			newEntry, _ := memstore.GetEntryInfoHidden(id, urlbase, Get, ApiGet)
 			log.Println("New ID:", id)
 			w.WriteHeader(http.StatusCreated)
 			if err := json.NewEncoder(w).Encode(newEntry); err != nil {

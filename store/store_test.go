@@ -1,11 +1,12 @@
 package store
 
 import (
-	"bou.ke/monkey"
 	"net/http/httptest"
 	"reflect"
 	"testing"
 	"time"
+
+	"bou.ke/monkey"
 )
 
 var mockNow = time.Date(2009, time.November, 10, 23, 0, 0, 0, time.UTC)
@@ -72,7 +73,7 @@ func TestStore_NewEntry(t *testing.T) {
 func TestStore_GetEntryInfo(t *testing.T) {
 	store := make(SecretStore)
 	store.NewEntry("secret", 1, 1, "auth", "testid")
-	out, ok := store.GetEntryInfoHidden("testid", "http://localhost:")
+	out, ok := store.GetEntryInfoHidden("testid", "http://localhost:", "/g", "/api/v1/get/")
 	if !ok {
 		t.Errorf("new entry not found under %v", "testid")
 	}

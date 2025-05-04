@@ -120,11 +120,11 @@ into the server subcommand)`,
 		http.Handle(httpio.Get, httpio.HandleGet(memstore, getURLBase(), fNotify, userMessageView))
 		http.Handle(httpio.Info, httpio.HandleInfo(memstore, getURLBase()))
 		if fAllowAnonymous {
-			http.Handle(httpio.Create, httpio.HandleCreate(memstore, getURLBase(), httpio.Get))
+			http.Handle(httpio.Create, httpio.HandleCreate(memstore, getURLBase()))
 		}
 
 		// API handlers
-		http.Handle(httpio.ApiGet, httpio.HandleApiGet(memstore, getURLBase(), fNotify, httpio.ApiGet))
+		http.Handle(httpio.ApiGet, httpio.HandleApiGet(memstore, getURLBase(), fNotify))
 		http.Handle(httpio.ApiNew, httpio.HandleApiNew(memstore, getURLBase(), auth))
 
 		// Static handlers
