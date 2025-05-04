@@ -21,3 +21,19 @@
 - Improve test coverage
 - Use a more standard mechanism for sending token
 - Make separate api and user http handlers ✅
+
+
+# Hash val
+
+map[hash]entry
+
+   hash1 -> entry1
+   hash2 -> entry2
+     .
+     .
+     .
+
+struct_entry |                  struct_entry
+  - secret   |____ hash   -->     - hash(secret)
+  - date     |                    - date
+  - issuer   |                    - issuer
