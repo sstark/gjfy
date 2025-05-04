@@ -132,7 +132,7 @@ into the server subcommand)`,
 		http.Handle(httpio.LogoSmall, httpio.HandleStaticLogoSmall())
 		http.Handle(httpio.Css, httpio.HandleStaticCss(css, updated))
 		http.Handle(httpio.Logo, httpio.HandleStaticLogo(logo, updated))
-		http.Handle(httpio.ClientShell, httpio.HandleStaticClientShellScript(getURLBase(), httpio.ApiNew))
+		http.Handle(httpio.ClientShell, httpio.HandleStaticClientShellScript(getURLBase()))
 
 		if fNotify {
 			log.Println("email notifications enabled")

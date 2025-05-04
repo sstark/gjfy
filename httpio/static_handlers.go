@@ -37,10 +37,10 @@ func HandleStaticLogo(logo []byte, updated time.Time) http.Handler {
 	})
 }
 
-func HandleStaticClientShellScript(urlbase, urlapinew string) http.Handler {
+func HandleStaticClientShellScript(urlbase string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/x-sh")
 		w.WriteHeader(http.StatusOK)
-		misc.ClientShellScript(w, urlbase+urlapinew)
+		misc.ClientShellScript(w, urlbase+ApiNew)
 	})
 }
