@@ -1,10 +1,10 @@
-package api
+package httpio
 
 var (
 	Get         = "/g"
 	ApiGet      = "/api/v1/get/"
 	ApiNew      = "/api/v1/new"
-	ApiCreate   = "/create"
+	Create      = "/create"
 	Info        = "/i"
 	ClientShell = "/gjfy-post"
 	Fav         = "/favicon.ico"

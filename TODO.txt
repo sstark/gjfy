@@ -20,4 +20,4 @@
 - Fix deprecated io/ioutil usage ✅
 - Improve test coverage
 - Use a more standard mechanism for sending token
-- Make separate api and user http handlers
+- Make separate api and user http handlers ✅

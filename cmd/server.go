@@ -1,11 +1,7 @@
 package cmd
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
-	"html/template"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -15,8 +11,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/sstark/gjfy/api"
 	"github.com/sstark/gjfy/fileio"
+	"github.com/sstark/gjfy/httpio"
 	"github.com/sstark/gjfy/misc"
 	"github.com/sstark/gjfy/store"
 	"github.com/sstark/gjfy/tokendb"
@@ -26,8 +22,7 @@ const (
 	myName                = "gjfy"
 	defaultHostname       = "localhost"
 	listenDefault         = ":9154"
-	maxData               = 1048576 // 1MB
-	expiryCheck           = 30      // minutes
+	expiryCheck           = 30 // minutes
 	crtFile               = myName + ".crt"
 	keyFile               = myName + ".key"
 	TLSDefault            = false
@@ -48,15 +43,6 @@ var (
 	scheme          = "http://"
 	userMessageView string
 )
-
-type viewInfoEntry struct {
-	store.StoreEntryInfo
-	UserMessageView string
-}
-
-type jsonError struct {
-	Error string `json:"error"`
-}
 
 func Log(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -129,131 +115,24 @@ into the server subcommand)`,
 			}
 		}()
 
-		htmlTemplates, _ := template.ParseFS(fileio.HtmlTemplates, "*.tmpl")
-
-		http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			type Data struct {
-				AllowAnonymous bool
-			}
-			htmlTemplates.ExecuteTemplate(w, "index", &Data{AllowAnonymous: fAllowAnonymous,
-			})
-		})
-
+		// View handlers
+		http.Handle("/", httpio.HandleIndex(fAllowAnonymous))
+		http.Handle(httpio.Get, httpio.HandleGet(memstore, getURLBase(), fNotify, userMessageView))
+		http.Handle(httpio.Info, httpio.HandleInfo(memstore, getURLBase()))
 		if fAllowAnonymous {
-			http.HandleFunc(api.ApiCreate, func(w http.ResponseWriter, r *http.Request) {
-				err := r.ParseForm()
-				if err != nil {
-					http.Error(w, err.Error(), http.StatusBadRequest)
-					return
-				}
-				entry := memstore.NewEntry(r.Form.Get("secret"), 1, 7, "anonymous", "")
-				w.Write([]byte(fmt.Sprintf("%s%s?id=%s", getURLBase(), api.Get, entry)))
-			})
+			http.Handle(httpio.Create, httpio.HandleCreate(memstore, getURLBase(), httpio.Get))
 		}
 
-		http.HandleFunc(api.ApiGet, func(w http.ResponseWriter, r *http.Request) {
-			id := r.URL.Path[len(api.ApiGet):]
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			if entry, ok := memstore.GetEntryInfo(id, getURLBase()); !ok {
-				w.WriteHeader(http.StatusNotFound)
-				log.Printf("entry not found: %s", id)
-				if jerr := json.NewEncoder(w).Encode(jsonError{"not found"}); jerr != nil {
-					panic(jerr)
-				}
-			} else {
-				memstore.Click(id, r, fNotify)
-				w.WriteHeader(http.StatusOK)
-				if err := json.NewEncoder(w).Encode(entry); err != nil {
-					panic(err)
-				}
-			}
-		})
+		// API handlers
+		http.Handle(httpio.ApiGet, httpio.HandleApiGet(memstore, getURLBase(), fNotify, httpio.ApiGet))
+		http.Handle(httpio.ApiNew, httpio.HandleApiNew(memstore, getURLBase(), auth))
 
-		http.HandleFunc(api.ApiNew, func(w http.ResponseWriter, r *http.Request) {
-			var entry store.StoreEntry
-
-			body, err := io.ReadAll(io.LimitReader(r.Body, maxData))
-			if err != nil {
-				panic(err)
-			}
-			if err := r.Body.Close(); err != nil {
-				panic(err)
-			}
-			w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-			if err := json.Unmarshal(body, &entry); err != nil {
-				w.WriteHeader(422) // unprocessable entity
-				log.Printf("error processing json: %s", err)
-				if jerr := json.NewEncoder(w).Encode(jsonError{err.Error()}); jerr != nil {
-					panic(jerr)
-				}
-			} else if !auth.IsAuthorized(&entry) {
-				w.WriteHeader(http.StatusUnauthorized)
-				log.Printf("unauthorized try to make new entry")
-				if jerr := json.NewEncoder(w).Encode(jsonError{"unauthorized"}); jerr != nil {
-					panic(jerr)
-				}
-			} else {
-				id := memstore.AddEntry(entry, "")
-				newEntry, _ := memstore.GetEntryInfoHidden(id, getURLBase())
-				log.Println("New ID:", id)
-				w.WriteHeader(http.StatusCreated)
-				if err := json.NewEncoder(w).Encode(newEntry); err != nil {
-					panic(err)
-				}
-			}
-		})
-
-		http.HandleFunc(api.Get, func(w http.ResponseWriter, r *http.Request) {
-			id := r.URL.Query().Get("id")
-			if entry, ok := memstore.GetEntryInfo(id, getURLBase()); !ok {
-				w.WriteHeader(http.StatusNotFound)
-				log.Printf("entry not found: %s", id)
-				htmlTemplates.ExecuteTemplate(w, "error", nil)
-			} else {
-				memstore.Click(id, r, fNotify)
-				w.WriteHeader(http.StatusOK)
-				viewEntry := viewInfoEntry{entry, userMessageView}
-				htmlTemplates.ExecuteTemplate(w, "view", viewEntry)
-			}
-		})
-
-		http.HandleFunc(api.Info, func(w http.ResponseWriter, r *http.Request) {
-			id := r.URL.Query().Get("id")
-			if entry, ok := memstore.GetEntryInfo(id, getURLBase()); !ok {
-				w.WriteHeader(http.StatusNotFound)
-				htmlTemplates.ExecuteTemplate(w, "error", nil)
-			} else {
-				w.WriteHeader(http.StatusOK)
-				htmlTemplates.ExecuteTemplate(w, "info", entry)
-			}
-		})
-
-		http.HandleFunc(api.Fav, func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "image/x-icon")
-			w.WriteHeader(http.StatusOK)
-			w.Write(fileio.Favicon)
-		})
-
-		http.HandleFunc(api.LogoSmall, func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "image/png")
-			w.WriteHeader(http.StatusOK)
-			w.Write(fileio.GjfyLogoSmall)
-		})
-
-		http.HandleFunc(api.Css, func(w http.ResponseWriter, r *http.Request) {
-			http.ServeContent(w, r, fileio.CssFileName, updated, bytes.NewReader(css))
-		})
-
-		http.HandleFunc(api.Logo, func(w http.ResponseWriter, r *http.Request) {
-			http.ServeContent(w, r, fileio.LogoFileName, updated, bytes.NewReader(logo))
-		})
-
-		http.HandleFunc(api.ClientShell, func(w http.ResponseWriter, r *http.Request) {
-			w.Header().Set("Content-Type", "application/x-sh")
-			w.WriteHeader(http.StatusOK)
-			misc.ClientShellScript(w, getURLBase()+api.ApiNew)
-		})
+		// Static handlers
+		http.Handle(httpio.Fav, httpio.HandleStaticFav())
+		http.Handle(httpio.LogoSmall, httpio.HandleStaticLogoSmall())
+		http.Handle(httpio.Css, httpio.HandleStaticCss(css, updated))
+		http.Handle(httpio.Logo, httpio.HandleStaticLogo(logo, updated))
+		http.Handle(httpio.ClientShell, httpio.HandleStaticClientShellScript(getURLBase(), httpio.ApiNew))
 
 		if fNotify {
 			log.Println("email notifications enabled")
