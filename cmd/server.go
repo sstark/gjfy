@@ -61,7 +61,14 @@ func getURLBase() string {
 	return fmt.Sprintf("%s%s:%s", scheme, defaultHostname, port)
 }
 
-func updateFiles() {
+
+// updateFiles returns values for the (global) variables for those assets
+// the the user can change/update during gjfy runtime. This is supposed
+// to be run once at the beginning and on SIGHUP.
+// The returned values need to be assigned to the corresponding (global)
+// variables.
+// The last return value contains the time of the last update.
+func updateFiles() (auth tokendb.TokenDB, css, logo []byte, userMessageView string, updated time.Time) {
 	auth = tokendb.MakeTokenDB(fileio.TryReadFile(tokendb.AuthFileName))
 	if auth == nil {
 		log.Println("auth db could not be loaded, please fix and reload")
@@ -76,6 +83,7 @@ func updateFiles() {
 	})
 	userMessageView = fileio.FileOrConst(fileio.UserMessageViewFilename, fileio.UserMessageViewDefaultText)
 	updated = time.Now()
+	return
 }
 
 func init() {
@@ -103,7 +111,7 @@ into the server subcommand)`,
 		memstore.NewEntry("secret", 100, 0, "test@example.org", "test")
 		go memstore.Expiry(time.Minute * expiryCheck)
 
-		updateFiles()
+		auth, css, logo, userMessageView, updated = updateFiles()
 
 		sighup := make(chan os.Signal, 1)
 		signal.Notify(sighup, syscall.SIGHUP)
@@ -111,7 +119,7 @@ into the server subcommand)`,
 			for {
 				<-sighup
 				log.Println("reloading configuration...")
-				updateFiles()
+				auth, css, logo, userMessageView, updated = updateFiles()
 			}
 		}()
 
