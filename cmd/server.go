@@ -133,7 +133,7 @@ into the server subcommand)`,
 
 		// API handlers
 		http.Handle(httpio.ApiGet, httpio.HandleApiGet(memstore, getURLBase(), fNotify))
-		http.Handle(httpio.ApiNew, httpio.HandleApiNew(memstore, getURLBase(), auth))
+		http.Handle(httpio.ApiNew, httpio.HandleApiNew(memstore, getURLBase(), &auth))
 
 		// Static handlers
 		http.Handle(httpio.Fav, httpio.HandleStaticFav())

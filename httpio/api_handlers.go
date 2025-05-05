@@ -38,7 +38,7 @@ func HandleApiGet(memstore store.SecretStore, urlbase string, fNotify bool) http
 	})
 }
 
-func HandleApiNew(memstore store.SecretStore, urlbase string, auth tokendb.TokenDB) http.Handler {
+func HandleApiNew(memstore store.SecretStore, urlbase string, auth *tokendb.TokenDB) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var entry store.StoreEntry
 

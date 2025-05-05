@@ -73,7 +73,7 @@ func TestHAndleApiNew(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, auth)
+	handler := HandleApiNew(store, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusCreated {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusCreated)
@@ -104,7 +104,7 @@ func TestHAndleApiNewUnauthorized(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, auth)
+	handler := HandleApiNew(store, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusUnauthorized {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusUnauthorized)
@@ -135,7 +135,7 @@ func TestHAndleApiNewMalformed(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, auth)
+	handler := HandleApiNew(store, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusUnprocessableEntity {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusUnprocessableEntity)
