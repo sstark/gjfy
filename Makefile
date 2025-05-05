@@ -19,3 +19,6 @@ test:
 
 test-verbose:
 	go test -v ./...
+
+test-coverage:
+	go test -cover ./...

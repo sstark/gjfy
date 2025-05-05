@@ -12,8 +12,8 @@ const (
 )
 
 type AuthToken struct {
-	Token string `json:token`
-	Email string `json:email`
+	Token string `json:"token"`
+	Email string `json:"email"`
 }
 
 type TokenDB []AuthToken
@@ -49,7 +49,7 @@ func (db TokenDB) findToken(token string) (email string) {
 }
 
 // IsAuthorized tries to find the auth token given in entry.
-// It will the change the entry parameter by replacing the auth
+// It will then change the entry parameter by replacing the auth
 // token with the associated email address. This is to have the
 // auth token not end up in the secret database.
 func (db TokenDB) IsAuthorized(entry *store.StoreEntry) bool {
