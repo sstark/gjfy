@@ -55,7 +55,7 @@ func TestHandleApiGetNonExisting(t *testing.T) {
 	}
 }
 
-func TestHAndleApiNew(t *testing.T) {
+func TestHandleApiNew(t *testing.T) {
 	monkey.Patch(time.Now, func() time.Time {
 		return mockNow
 	})
@@ -86,7 +86,7 @@ func TestHAndleApiNew(t *testing.T) {
 	}
 }
 
-func TestHAndleApiNewUnauthorized(t *testing.T) {
+func TestHandleApiNewUnauthorized(t *testing.T) {
 	monkey.Patch(time.Now, func() time.Time {
 		return mockNow
 	})
@@ -100,7 +100,7 @@ func TestHAndleApiNewUnauthorized(t *testing.T) {
 	postdata := bytes.NewReader([]byte(`{
 					"auth_token": "wrongtoken",
 					"secret": "sekrit",
-					"max_clicks": 3 
+					"max_clicks": 3
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
@@ -117,7 +117,7 @@ func TestHAndleApiNewUnauthorized(t *testing.T) {
 	}
 }
 
-func TestHAndleApiNewMalformed(t *testing.T) {
+func TestHandleApiNewMalformed(t *testing.T) {
 	monkey.Patch(time.Now, func() time.Time {
 		return mockNow
 	})
