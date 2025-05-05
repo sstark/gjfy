@@ -1,5 +1,6 @@
 *.swp
 cover.cov
+coverage.out
 gjfy
 gjfy.crt
 gjfy.key
