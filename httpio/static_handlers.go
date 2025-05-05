@@ -25,14 +25,18 @@ func HandleStaticLogoSmall() http.Handler {
 	})
 }
 
-func HandleStaticCss(css []byte, updated time.Time) http.Handler {
+func HandleStaticCss(cssp *[]byte, updatedp *time.Time) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		css := *cssp
+		updated := *updatedp
 		http.ServeContent(w, r, fileio.CssFileName, updated, bytes.NewReader(css))
 	})
 }
 
-func HandleStaticLogo(logo []byte, updated time.Time) http.Handler {
+func HandleStaticLogo(logop *[]byte, updatedp *time.Time) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logo := *logop
+		updated := *updatedp
 		http.ServeContent(w, r, fileio.LogoFileName, updated, bytes.NewReader(logo))
 	})
 }

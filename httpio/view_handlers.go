@@ -12,7 +12,7 @@ import (
 
 type viewInfoEntry struct {
 	store.StoreEntryInfo
-	UserMessageView string
+	UserMessageView *string
 }
 
 var htmlTemplates *template.Template
@@ -31,7 +31,7 @@ func HandleIndex(fAllowAnonymous bool) http.Handler {
 	})
 }
 
-func HandleGet(memstore store.SecretStore, urlbase string, fNotify bool, userMessageView string) http.Handler {
+func HandleGet(memstore store.SecretStore, urlbase string, fNotify bool, userMessageView *string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")
 		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {

@@ -21,8 +21,6 @@
 - Improve test coverage
 - Use a more standard mechanism for sending token
 - Make separate api and user http handlers ✅
-  - Check how "updated" time variables that are now injected can be
-    kept up to date. Probably handlers need to be re-set.
 
 
 # Hash val

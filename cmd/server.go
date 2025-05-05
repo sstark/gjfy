@@ -117,7 +117,7 @@ into the server subcommand)`,
 
 		// View handlers
 		http.Handle("/", httpio.HandleIndex(fAllowAnonymous))
-		http.Handle(httpio.Get, httpio.HandleGet(memstore, getURLBase(), fNotify, userMessageView))
+		http.Handle(httpio.Get, httpio.HandleGet(memstore, getURLBase(), fNotify, &userMessageView))
 		http.Handle(httpio.Info, httpio.HandleInfo(memstore, getURLBase()))
 		if fAllowAnonymous {
 			http.Handle(httpio.Create, httpio.HandleCreate(memstore, getURLBase()))
@@ -130,8 +130,8 @@ into the server subcommand)`,
 		// Static handlers
 		http.Handle(httpio.Fav, httpio.HandleStaticFav())
 		http.Handle(httpio.LogoSmall, httpio.HandleStaticLogoSmall())
-		http.Handle(httpio.Css, httpio.HandleStaticCss(css, updated))
-		http.Handle(httpio.Logo, httpio.HandleStaticLogo(logo, updated))
+		http.Handle(httpio.Css, httpio.HandleStaticCss(&css, &updated))
+		http.Handle(httpio.Logo, httpio.HandleStaticLogo(&logo, &updated))
 		http.Handle(httpio.ClientShell, httpio.HandleStaticClientShellScript(getURLBase()))
 
 		if fNotify {
