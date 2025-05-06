@@ -1,9 +1,9 @@
 Examples for integrating gjfy with various startup systems
 ==========================================================
 
-Examples provided for: upstart, systemd
+Examples provided for: systemd
 
-All example configurations assume that you have:
+Example configuration assumes that you have:
 
   - a system user account with the name "gjfy" and primary group "nogroup"
     (although you could of course choose totally different names

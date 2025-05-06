@@ -126,7 +126,7 @@ The scheme will automatically switch to https unless you set urlbase. Before
 you can turn on tls you must create a certificate file called `gjfy.crt` and a
 key file called `gjfy.key`.
 
-Use `gjfy server -help` for help.
+Use `gjfy server --help` for help.
 
 ### Subcommand `completion`
 
