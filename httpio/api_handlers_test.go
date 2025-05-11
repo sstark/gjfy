@@ -2,8 +2,12 @@ package httpio
 
 import (
 	"bytes"
+	"fmt"
+	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -117,6 +121,26 @@ func TestHandleApiNewUnauthorized(t *testing.T) {
 	}
 }
 
+type mockFailingResponseWriter struct {
+	statusCode int
+	headers    http.Header
+}
+
+func (m *mockFailingResponseWriter) WriteHeader(_ int) {
+	return
+}
+
+func (m *mockFailingResponseWriter) Header() http.Header {
+	if m.headers == nil {
+		m.headers = make(http.Header)
+	}
+	return m.headers
+}
+
+func (m *mockFailingResponseWriter) Write(_ []byte) (int, error) {
+	return 0, fmt.Errorf("simulated write error")
+}
+
 func TestHandleApiNewMalformed(t *testing.T) {
 	monkey.Patch(time.Now, func() time.Time {
 		return mockNow
@@ -149,32 +173,54 @@ func TestHandleApiNewMalformed(t *testing.T) {
 }
 
 func TestJsonRespond(t *testing.T) {
-	// Given
-	rr := httptest.NewRecorder()
-	type testContent struct {
-		SomeValue string `json:"somevalue"`
-	}
+	t.Run("happy case", func(t *testing.T) {
+		rr := httptest.NewRecorder()
+		type testContent struct {
+			SomeValue string `json:"somevalue"`
+		}
 
-	// When
-	jsonRespond(rr, http.StatusOK, testContent{"foobar"})
+		jsonRespond(rr, http.StatusOK, testContent{"foobar"})
 
-	// Expect in recorded response:
-	// correct header
-	expectedContentType := "application/json; charset=UTF-8"
-	if rr.Header().Get("Content-Type") != expectedContentType {
-		t.Errorf("handler returned wrong content type: got %v, wanted %v", rr.Header().Get("Content-Type"), expectedContentType)
-	}
-
-	// correct status
-	if rr.Code != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v, wanted %v", rr.Code, http.StatusOK)
-	}
-
-	// content as json
-	expectedBody := `{"somevalue":"foobar"}
+		expectedContentType := "application/json; charset=UTF-8"
+		if rr.Header().Get("Content-Type") != expectedContentType {
+			t.Errorf("handler returned wrong content type: got %v, wanted %v", rr.Header().Get("Content-Type"), expectedContentType)
+		}
+		if rr.Code != http.StatusOK {
+			t.Errorf("handler returned wrong status code: got %v, wanted %v", rr.Code, http.StatusOK)
+		}
+		expectedBody := `{"somevalue":"foobar"}
 `
+		if rr.Body.String() != expectedBody {
+			t.Errorf("handler returned unexpected body: got\n%v want\n%v", rr.Body.String(), expectedBody)
+		}
+	})
 
-	if rr.Body.String() != expectedBody {
-		t.Errorf("handler returned unexpected body: got\n%v want\n%v", rr.Body.String(), expectedBody)
-	}
+	t.Run("unhappy case: json encoding error", func(t *testing.T) {
+		rr := httptest.NewRecorder()
+		var invalidData chan int
+
+		jsonRespond(rr, http.StatusOK, invalidData)
+
+		expectedBody := `{"error":"internal error"}`
+		if rr.Body.String() != expectedBody {
+			t.Errorf("handler returned unexpected body: got\n%v want\n%v", rr.Body.String(), expectedBody)
+		}
+	})
+
+	t.Run("unhappy case: can not write", func(t *testing.T) {
+		var buf bytes.Buffer
+		log.SetOutput(&buf)
+		defer func() {
+			log.SetOutput(os.Stderr)
+		}()
+		rr := &mockFailingResponseWriter{statusCode: http.StatusOK, headers: make(http.Header)}
+
+		jsonRespond(rr, http.StatusOK, "foo")
+
+		expectedError := `error writing response: simulated write error
+`
+		if !strings.HasSuffix(buf.String(), expectedError) {
+			t.Errorf("handler did not log error: got\n%v wanted suffix\n%v", buf.String(), expectedError)
+		}
+	})
 }

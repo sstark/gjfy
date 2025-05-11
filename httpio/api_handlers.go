@@ -61,8 +61,11 @@ func HandleApiNew(memstore store.SecretStore, urlbase string, auth *tokendb.Toke
 func jsonRespond(w http.ResponseWriter, status int, data any) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.WriteHeader(status)
-	// FIXME: don't panic
 	if jerr := json.NewEncoder(w).Encode(data); jerr != nil {
-		panic(jerr)
+		log.Printf("error encoding json: %s", jerr)
+		_, err := w.Write([]byte(`{"error":"internal error"}`))
+		if err != nil {
+			log.Printf("error writing response: %s", err)
+		}
 	}
 }
