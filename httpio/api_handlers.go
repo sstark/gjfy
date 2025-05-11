@@ -5,6 +5,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"path"
 
 	"github.com/sstark/gjfy/store"
 	"github.com/sstark/gjfy/tokendb"
@@ -20,7 +21,7 @@ type jsonError struct {
 
 func HandleApiGet(memstore store.SecretStore, urlbase string, fNotify bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		id := r.URL.Path[len(ApiGet):]
+		id := path.Base(r.URL.Path)
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {
 			w.WriteHeader(http.StatusNotFound)
