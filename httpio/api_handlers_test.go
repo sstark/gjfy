@@ -19,12 +19,12 @@ func TestHandleApiGet(t *testing.T) {
 		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	store := make(store.SecretStore)
-	store.NewEntry("secret", 1, 1, "auth", "testid")
+	secretStore := make(store.SecretStore)
+	secretStore.NewEntry("secret", 1, 1, "auth", "testid")
 	urlbase := "http://localhost:9154"
 	req, _ := http.NewRequest("GET", urlbase+ApiGet+"testid", nil)
 	rr := httptest.NewRecorder()
-	handler := HandleApiGet(store, urlbase, false)
+	handler := HandleApiGet(secretStore, urlbase, false)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusOK)
@@ -38,11 +38,11 @@ func TestHandleApiGet(t *testing.T) {
 }
 
 func TestHandleApiGetNonExisting(t *testing.T) {
-	store := make(store.SecretStore)
+	secretStore := make(store.SecretStore)
 	urlbase := "http://localhost:9154"
 	req, _ := http.NewRequest("GET", urlbase+ApiGet+"foo", nil)
 	rr := httptest.NewRecorder()
-	handler := HandleApiGet(store, urlbase, false)
+	handler := HandleApiGet(secretStore, urlbase, false)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusNotFound {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusOK)
@@ -60,7 +60,7 @@ func TestHandleApiNew(t *testing.T) {
 		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	store := make(store.SecretStore)
+	secretStore := make(store.SecretStore)
 	auth := tokendb.MakeTokenDB([]byte(`[{
 					"token": "footoken",
 					"email": "test@example.org"
@@ -73,7 +73,7 @@ func TestHandleApiNew(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, &auth)
+	handler := HandleApiNew(secretStore, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusCreated {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusCreated)
@@ -91,7 +91,7 @@ func TestHandleApiNewUnauthorized(t *testing.T) {
 		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	store := make(store.SecretStore)
+	secretStore := make(store.SecretStore)
 	auth := tokendb.MakeTokenDB([]byte(`[{
 					"token": "footoken",
 					"email": "test@example.org"
@@ -104,7 +104,7 @@ func TestHandleApiNewUnauthorized(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, &auth)
+	handler := HandleApiNew(secretStore, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusUnauthorized {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusUnauthorized)
@@ -122,7 +122,7 @@ func TestHandleApiNewMalformed(t *testing.T) {
 		return mockNow
 	})
 	defer monkey.Unpatch(time.Now)
-	store := make(store.SecretStore)
+	secretStore := make(store.SecretStore)
 	auth := tokendb.MakeTokenDB([]byte(`[{
 					"token": "footoken",
 					"email": "test@example.org"
@@ -135,7 +135,7 @@ func TestHandleApiNewMalformed(t *testing.T) {
 				}`))
 	req, _ := http.NewRequest("POST", urlbase+ApiNew, postdata)
 	rr := httptest.NewRecorder()
-	handler := HandleApiNew(store, urlbase, &auth)
+	handler := HandleApiNew(secretStore, urlbase, &auth)
 	handler.ServeHTTP(rr, req)
 	if status := rr.Code; status != http.StatusUnprocessableEntity {
 		t.Errorf("handler returned wrong status code: got %v, wanted %v", status, http.StatusUnprocessableEntity)
