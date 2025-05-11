@@ -147,3 +147,34 @@ func TestHandleApiNewMalformed(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 }
+
+func TestJsonRespond(t *testing.T) {
+	// Given
+	rr := httptest.NewRecorder()
+	type testContent struct {
+		SomeValue string `json:"somevalue"`
+	}
+
+	// When
+	jsonRespond(rr, http.StatusOK, testContent{"foobar"})
+
+	// Expect in recorded response:
+	// correct header
+	expectedContentType := "application/json; charset=UTF-8"
+	if rr.Header().Get("Content-Type") != expectedContentType {
+		t.Errorf("handler returned wrong content type: got %v, wanted %v", rr.Header().Get("Content-Type"), expectedContentType)
+	}
+
+	// correct status
+	if rr.Code != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v, wanted %v", rr.Code, http.StatusOK)
+	}
+
+	// content as json
+	expectedBody := `{"somevalue":"foobar"}
+`
+
+	if rr.Body.String() != expectedBody {
+		t.Errorf("handler returned unexpected body: got\n%v want\n%v", rr.Body.String(), expectedBody)
+	}
+}

@@ -22,19 +22,12 @@ type jsonError struct {
 func HandleApiGet(memstore store.SecretStore, urlbase string, fNotify bool) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := path.Base(r.URL.Path)
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if entry, ok := memstore.GetEntryInfo(id, urlbase, Get, ApiGet); !ok {
-			w.WriteHeader(http.StatusNotFound)
 			log.Printf("entry not found: %s", id)
-			if jerr := json.NewEncoder(w).Encode(jsonError{"not found"}); jerr != nil {
-				panic(jerr)
-			}
+			jsonRespond(w, http.StatusNotFound, jsonError{"not found"})
 		} else {
 			memstore.Click(id, r, fNotify)
-			w.WriteHeader(http.StatusOK)
-			if err := json.NewEncoder(w).Encode(entry); err != nil {
-				panic(err)
-			}
+			jsonRespond(w, http.StatusOK, entry)
 		}
 	})
 }
@@ -50,27 +43,26 @@ func HandleApiNew(memstore store.SecretStore, urlbase string, auth *tokendb.Toke
 		if err := r.Body.Close(); err != nil {
 			panic(err)
 		}
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		if err := json.Unmarshal(body, &entry); err != nil {
-			w.WriteHeader(422) // unprocessable entity
 			log.Printf("error processing json: %s", err)
-			if jerr := json.NewEncoder(w).Encode(jsonError{err.Error()}); jerr != nil {
-				panic(jerr)
-			}
+			jsonRespond(w, http.StatusUnprocessableEntity, jsonError{err.Error()})
 		} else if !auth.IsAuthorized(&entry) {
-			w.WriteHeader(http.StatusUnauthorized)
-			log.Printf("unauthorized try to make new entry")
-			if jerr := json.NewEncoder(w).Encode(jsonError{"unauthorized"}); jerr != nil {
-				panic(jerr)
-			}
+			log.Printf("unauthorized when trying to make new entry")
+			jsonRespond(w, http.StatusUnauthorized, jsonError{"unauthorized"})
 		} else {
 			id := memstore.AddEntry(entry, "")
 			newEntry, _ := memstore.GetEntryInfoHidden(id, urlbase, Get, ApiGet)
 			log.Println("New ID:", id)
-			w.WriteHeader(http.StatusCreated)
-			if err := json.NewEncoder(w).Encode(newEntry); err != nil {
-				panic(err)
-			}
+			jsonRespond(w, http.StatusCreated, newEntry)
 		}
 	})
+}
+
+func jsonRespond(w http.ResponseWriter, status int, data any) {
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(status)
+	// FIXME: don't panic
+	if jerr := json.NewEncoder(w).Encode(data); jerr != nil {
+		panic(jerr)
+	}
 }
